@@ -1,0 +1,23 @@
+{
+  "skill_name": "tiendu-admin-api",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to create a coupon for my Tiendu store (id 32, api key 456455544, localhost:4000). It should give 15% off with a maximum discount of $300 pesos. The code should be 'VERANO15'. No minimum order, unlimited uses, no expiration. Make it active. Just tell me the exact curl command and explain the request body.",
+      "expected_output": "A curl command that uses POST /api/v2/stores/32/coupons with the correct input-wrapped body containing all required fields, with discountPercentage=15, maxDiscountAmountInCents=30000, and null for unused nullable fields.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Create a new page for my Tiendu store (id 32, api key 456455544, localhost:4000). Title: 'Preguntas Frecuentes', handle: 'preguntas-frecuentes'. It should be listed and public. Content: a heading 'Preguntas Frecuentes' followed by a paragraph 'Aquí encontrarás las respuestas a las dudas más comunes.' No cover image. Tell me the exact curl command.",
+      "expected_output": "A curl command that uses POST /api/v2/stores/32/pages with the correct input-wrapped body containing title, handle, content with proper block structure (id, type, text/level), coverImageId=null, isListed=true, isPublic=true.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I want to update a coupon in my Tiendu store (id 32, api key 456455544, localhost:4000). First list all coupons to find the one with code 'VERANO15', then update it to deactivate it (set isActive to false). Give me both curl commands.",
+      "expected_output": "Two curl commands: first GET /api/v2/stores/32/coupons, then PATCH /api/v2/stores/32/coupons/{resourceId} with input={isActive:false}. Should explain finding the id from the list response.",
+      "files": []
+    }
+  ]
+}
