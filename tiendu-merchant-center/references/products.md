@@ -97,21 +97,42 @@ Si cambiás el handle de un producto ya guardado, aparece el tilde
 
 ### Idea simple
 
-- Un **atributo** es una dimensión (ej. Color, Talle).
-- Una **variante** es una combinación concreta (ej. Rojo + M) con su propio
-  precio, stock, SKU, imagen de tapa, etc.
+- Un **atributo** es una dimensión de la **tienda** (ej. Color, Talle), con sus
+  valores posibles. Se define una vez para toda la tienda; no es “de un solo
+  producto”.
+- En cada producto **elegís qué atributos y qué valores** usa (por ejemplo solo
+  Talle S/M/L, o Color + Talle).
+- Una **variante** es una combinación concreta de esos valores (ej. Rojo + M)
+  con su propio precio, stock, SKU, imagen de tapa, etc.
 
-### Cómo se arma en el panel
+### Dónde se edita (panel lateral, no una página aparte)
+
+No hay un ítem de menú “Atributos”. Todo pasa desde el producto, en **paneles
+laterales** (drawers) que se abren a la derecha:
+
+1. En el producto, sección **Variantes** → **Asignar atributos** / **Editar
+   atributos**.
+2. Se abre el panel **Asociar atributos**: buscás y marcás atributos/valores de
+   la tienda para *este* producto.
+3. Desde ahí también podés **Nuevo atributo** / editar uno: se abre **otro**
+   panel encima (nombre, valores, cómo se muestra en la tienda, etc.). Eso
+   crea o cambia el atributo **a nivel tienda**.
+4. Cada variante se edita en su propio panel lateral (precio, stock, SKU…).
+
+### Cómo se arma
 
 1. Creá y **guardá primero el producto base** (título, etc.).
-2. En **Variantes**, si todavía no hay atributos: el copy dice que hay que
-   crear el producto base antes de armar variantes.
-3. Usá **Asignar atributos** / **Editar atributos** para definir dimensiones
-   (talle, color, material, u otras).
-4. El sistema arma las variantes; después editás cada una (precio, stock, SKU…).
+2. **Variantes** → **Asignar atributos** → elegí atributos/valores de la tienda
+   (o creá uno nuevo en el panel).
+3. El sistema arma las variantes; después editás cada una.
 
 Texto de ayuda en el panel: las variantes muestran distintas versiones del
 mismo producto, como talle, color o material.
+
+**Cuidado:** si agregás o quitás atributos (o valores) del producto, el panel
+avisa que las variantes existentes se pueden borrar y hay que volver a
+configurarlas. Borrar un atributo desde el editor lo elimina **de la tienda**
+(no solo del producto).
 
 ### Producto simple vs con variantes
 
@@ -135,7 +156,9 @@ Vender una remera en dos talles:
 ## Tips para guiar al vendedor
 
 - Si pregunta “dónde se ve”, hablá de **la tienda** (`/productos/…`), no del admin.
-- Si quiere “talle y color”, es **Variantes**, no **Características**.
+- Si quiere “talle y color”, es **Variantes** (atributos de la tienda + panel
+  lateral), no **Características**.
+- Los atributos son **de la tienda**; el producto solo elige cuáles usa.
 - Si el precio “no aparece” en el form principal, probablemente ya tiene
   variantes: mirá cada variante.
 - Handle y redirecciones: path con `/`, sin `https://mitienda…`.
