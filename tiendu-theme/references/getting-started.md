@@ -120,6 +120,7 @@ Prefer the documented object-based Liquid model.
 Before assuming an object or property exists, read:
 
 - `liquid-objects.md`
+- `liquid-filters.md`
 - `liquid-pagination.md`
 
 ## Theme editor compatibility

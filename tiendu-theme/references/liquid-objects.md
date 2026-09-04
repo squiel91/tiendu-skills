@@ -721,6 +721,8 @@ template_suffix?: string | null
 }
 ```
 
+When rendering `url` in an `<img>`, pick a display size with the `image_url` filter (`sm`, `md`, or `lg`). See `liquid-filters.md`.
+
 ### `AttributeValue`
 
 ```ts

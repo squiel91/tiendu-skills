@@ -20,7 +20,7 @@ Typical cases:
 2. Determine whether the target template is JSON or Liquid before editing page composition.
 3. Use `src/templates/*.json` for visual-customizer composition and treat `src/templates/*.liquid` as code-only templates.
 4. Prefer `src/layout/theme.liquid`; only use `src/layout.liquid` when the theme already depends on that legacy-compatible fallback.
-5. Check the Liquid object and pagination references before introducing new assumptions about data shape or availability.
+5. Check the Liquid object, filter, and pagination references before introducing new assumptions about data shape, image sizes, or availability.
 6. Keep schema, template JSON, and rendered markup aligned when the merchant should edit the result visually.
 
 ## Quality bar
@@ -41,4 +41,5 @@ For deeper details, read the relevant file:
 | Quick orientation and task-to-surface mapping | `references/getting-started.md` |
 | Full file ownership, template modes, section groups, and route conventions | `references/theme-structure.md` |
 | Exact Liquid-facing contract for every object | `references/liquid-objects.md` |
+| Liquid filters such as image sizes (`image_url`) | `references/liquid-filters.md` |
 | How pagination works, supported paths, and paginate object shape | `references/liquid-pagination.md` |
