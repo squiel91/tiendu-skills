@@ -721,7 +721,7 @@ template_suffix?: string | null
 }
 ```
 
-When rendering `url` in an `<img>`, pick a display size with the `image_url` filter (`sm`, `md`, or `lg`). See `liquid-filters.md`.
+For `<img src>`, use `| image_url: size: 'md'` (`sm` / `md` / `lg`). See `liquid-filters.md`.
 
 ### `AttributeValue`
 
