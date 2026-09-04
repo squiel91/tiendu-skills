@@ -8,6 +8,7 @@ Agent skills for the [Tiendu](https://tiendu.com) e-commerce platform.
 |-------|-------------|
 | [tiendu-theme](./tiendu-theme) | Build and customize Tiendu Liquid storefront themes |
 | [tiendu-manager](./tiendu-manager) | Manage store resources via the Tiendu Admin API |
+| [tiendu-merchant-center](./tiendu-merchant-center) | Guide merchants through the Merchant Center admin UI |
 
 ## Install
 
