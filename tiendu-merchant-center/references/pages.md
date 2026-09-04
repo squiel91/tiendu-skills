@@ -2,10 +2,10 @@
 
 ## Qué es
 
-Las **páginas** son contenidos de la vitrina que no son productos ni artículos
+Las **páginas** son contenidos de la tienda que no son productos ni artículos
 del blog (por ejemplo: Nosotros, Envíos, Preguntas frecuentes, Landing).
 
-En la vitrina se ven en `/paginas/{handle}`.
+En la tienda se ven en `/paginas/{handle}`.
 
 ## Dónde está
 

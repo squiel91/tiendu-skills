@@ -2,7 +2,7 @@
 
 ## Qué es
 
-Una **redirección** manda a quien visita una ruta vieja de la vitrina hacia otra
+Una **redirección** manda a quien visita una ruta vieja de la tienda hacia otra
 ruta (o hacia un sitio externo). Sirve cuando cambiás el handle de un producto,
 una página, una categoría o un post, o cuando migrás links antiguos.
 
@@ -44,7 +44,7 @@ El producto pasó de `/productos/remera-azul` a `/productos/remera-azul-2026`.
 | Desde | `/productos/remera-azul` |
 | Hacia | `/productos/remera-azul-2026` |
 
-Quien abra el link viejo en la vitrina termina en el nuevo.
+Quien abra el link viejo en la tienda termina en el nuevo.
 
 Destino externo (ej. campaña):
 

@@ -5,7 +5,7 @@
 Los **artículos del blog** son posts de contenido (novedades, tips, looks).
 En admin el menú suele decir **Blog**; la ruta es `blog-posts`.
 
-En la vitrina se ven en `/blog/{handle}`.
+En la tienda se ven en `/blog/{handle}`.
 
 ## Dónde está
 
