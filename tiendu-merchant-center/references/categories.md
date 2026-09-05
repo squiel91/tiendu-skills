@@ -6,9 +6,6 @@ Una **categoría** agrupa productos para listarlos en **la tienda** (por ejemplo
 “Remeras”, “Ofertas”). Pueden anidarse (categoría padre → hijas) y cada una
 tiene su URL pública `/categorias/{handle}`.
 
-En código a veces se habla de “collections”; en el panel el menú dice
-**Categorías**.
-
 ## Dónde está
 
 Menú: **Inventario** → **Categorías**

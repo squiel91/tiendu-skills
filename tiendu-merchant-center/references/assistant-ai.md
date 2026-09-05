@@ -7,10 +7,6 @@ por chat (productos, pedidos, contenido, “cómo hago X”, etc.). Las
 **Reglas del asistente** personalizan su comportamiento en el chat web del
 panel y también en WhatsApp (mismo Manu, otro canal).
 
-No hay una pantalla aparte de “créditos de IA” ni de facturación del asistente
-en el Merchant Center: el uso se contabiliza en backend; en el chat del panel
-no se muestra saldo ni tope.
-
 ## Dónde está
 
 ### Chat Manu (“¿Te doy una mano?”)
@@ -47,14 +43,6 @@ Límites visibles en UI:
 - Hasta **6** reglas por tienda.
 - Hasta **2024** caracteres por regla.
 
-### WhatsApp (menciones en el panel)
-
-- Las reglas aplican explícitamente a **web y WhatsApp**.
-- En **Ajustes → General → Contacto** el campo **Número de WhatsApp** es el
-  contacto de **la tienda** (lo que ve el comprador / links), **no** un
-  interruptor del asistente.
-- No hay pestaña “Asistente WhatsApp” aparte en Ajustes.
-
 ### Onboarding / checklist
 
 En **Resúmen** (home del admin) puede haber un checklist de activación de la
@@ -76,6 +64,3 @@ Merchant Center.
 - **Manu (admin)** ≠ chatbot de atención al comprador en la tienda pública (comprador).
 - **Reglas del asistente** ≠ **Redirecciones** ni **Notificaciones** (otras
   secciones de General).
-- **Número de WhatsApp** en Contacto ≠ configuración del canal del asistente.
-- Campañas / Meta / “WhatsApp” en Integraciones son marketing o catálogo, no
-  el chat de Manu.

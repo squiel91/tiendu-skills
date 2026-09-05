@@ -1,61 +1,65 @@
 ---
 name: tiendu-merchant-center
 description: >-
-  Use this skill when helping a Tiendu merchant (or Manu) navigate the Merchant
-  Center admin UI — where to click, what a feature is for, field rules, and short
-  examples. Prefer this over guessing menu paths. Always use it for questions
-  about admin screens such as settings, redirects, products, pages, blog,
-  coupons, reviews, categories, collaborators, Manu/assistant AI, domains, or
-  "dónde está X en el panel".
+  Usá este skill cuando ayudes a un vendedor de Tiendu (o a Manu) a navegar la
+  UI del Merchant Center: dónde hacer clic, para qué sirve una función, reglas
+  de campos y ejemplos cortos. Preferilo antes de adivinar rutas de menú.
+  Usalo siempre para preguntas sobre pantallas del admin como ajustes,
+  redirecciones, productos, páginas, blog, cupones, reseñas, categorías,
+  colaboradores, Manu/asistente IA, dominios, o “dónde está X en el panel”.
 ---
 
 # Tiendu Merchant Center
 
-Guide for the **Merchant Center** (admin panel) at `/admin/tiendas/{storeHandle}/…`.
+Guía del **Merchant Center** (panel de admin) en `/admin/tiendas/{storeHandle}/…`.
 
-Two places, two names:
+Dos lugares, dos nombres:
 
 | Nombre | Qué es |
 |--------|--------|
 | **Merchant Center** / admin / panel | Donde el vendedor configura la tienda. |
 | **La tienda** | La parte visual pública (lo que ve el comprador). |
 
-Speak to the merchant in plain Spanish. Prefer screen names and paths over
-internal code names. Do not invent menus; if a topic is not in the table below,
-say you need that section documented.
+Hablá con el vendedor en español claro. Preferí nombres de pantalla y rutas
+antes que nombres internos de código. No inventes menús; si un tema no está en
+la tabla de abajo, decí que hace falta documentar esa sección.
 
-## How to use this skill
+## Cómo usar este skill
 
-Read the reference that matches the merchant question:
+Leé la referencia que coincida con la pregunta del vendedor:
 
-| Topic | Read |
-|-------|------|
-| Path redirects (old URL → new URL on the store) | `references/redirects.md` |
-| Pages (static content pages) | `references/pages.md` |
-| Blog posts / articles | `references/blog.md` |
-| Products (price, media, variants, attributes, specs) | `references/products.md` |
-| Coupons / discount codes | `references/coupons.md` |
-| Product reviews | `references/reviews.md` |
-| Categories / collections | `references/categories.md` |
-| Collaborators (store admin access) | `references/collaborators.md` |
-| Assistant / AI (Manu in admin + store rules) | `references/assistant-ai.md` |
+| Tema | Leer |
+|------|------|
+| Redirecciones de rutas (URL vieja → URL nueva en la tienda) | `references/redirects.md` |
+| Páginas (contenido estático) | `references/pages.md` |
+| Blog / artículos | `references/blog.md` |
+| Productos (precio, medios, variantes, atributos, especificaciones) | `references/products.md` |
+| Cupones / códigos de descuento | `references/coupons.md` |
+| Reseñas de productos | `references/reviews.md` |
+| Categorías | `references/categories.md` |
+| Colaboradores (acceso al admin de la tienda) | `references/collaborators.md` |
+| Asistente / IA (Manu en el admin + reglas de la tienda) | `references/assistant-ai.md` |
 
-## URL shape
+## Forma de las URLs
 
-Most admin screens follow:
+La mayoría de las pantallas del admin siguen:
 
 ```text
 /admin/tiendas/{storeHandle}/…
 ```
 
-`{storeHandle}` is the store’s handle (e.g. `tienda-lucas`), not the numeric id.
+`{storeHandle}` es el handle de la tienda (ej. `tienda-lucas`), no el id
+numérico.
 
-Public URLs on **la tienda** use paths like `/productos/…`, `/paginas/…`, `/blog/…`
-on the store hostname — never put the full domain in handle/redirect “from” fields.
+Las URLs públicas de **la tienda** usan rutas como `/productos/…`, `/paginas/…`,
+`/blog/…` en el hostname de la tienda — nunca pongas el dominio completo en
+campos de handle o de “desde” en redirecciones.
 
-## Authoring rules (for future sections)
+## Reglas de autoría (para secciones futuras)
 
-- One topic per reference file.
-- Always include: **what it is**, **where to open it**, **what each field means**, **rules/limits**, **one example**.
-- Keep it short. Merchant-facing language only.
-- Say **tienda** for the public storefront; say **Merchant Center** / **admin** / **panel** for this UI.
+- Un tema por archivo de referencia.
+- Siempre incluí: **qué es**, **dónde abrirlo**, **qué significa cada campo**,
+  **reglas/límites**, **un ejemplo**.
+- Mantenerlo corto. Solo lenguaje orientado al vendedor.
+- Decí **tienda** para el storefront público; decí **Merchant Center** /
+  **admin** / **panel** para esta UI.
