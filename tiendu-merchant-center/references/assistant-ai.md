@@ -1,76 +1,81 @@
-# Asistente e IA (Manu)
+# Asistente / IA (Manu)
 
 ## Qué es
 
-En Tiendu hay **asistencia con IA** en dos contextos distintos. Manu es el
-nombre del asistente.
+**Manu** es el asistente de IA del Merchant Center: ayuda a gestionar la tienda
+por chat (productos, pedidos, contenido, “cómo hago X”, etc.). Las
+**Reglas del asistente** personalizan su comportamiento en el chat web del
+panel y también en WhatsApp (mismo Manu, otro canal).
 
-1. **Manu en el Merchant Center** — te ayuda a usar el panel (preguntas sobre
-   productos, cupones, etc.).
-2. **Asistente de la tienda (web / WhatsApp)** — atiende o asesora a compradores
-   en la tienda. Su tono y límites se personalizan con **Reglas del asistente**.
+No hay una pantalla aparte de “créditos de IA” ni de facturación del asistente
+en el Merchant Center: el uso se contabiliza en backend; en el chat del panel
+no se muestra saldo ni tope.
 
-Este archivo junta todo lo relacionado a IA que el vendedor toca en el panel.
+## Dónde está
 
-## Manu en el Merchant Center
+### Chat Manu (“¿Te doy una mano?”)
 
-### Dónde abrirlo
+- Botón fijo a la derecha del panel (rotado): **¿Te doy una mano?**
+- Abre el drawer **Asistente Manu** — subtítulo “Especialista IA en ventas
+  online”.
+- Placeholder: **Escribí tu mensaje…**; adjuntar imágenes (clip); tilde
+  **Enviar al presionar Enter** (desktop).
+- Cerrar: botón **Cerrar chat**.
 
-- Botón lateral **¿Te doy una mano?** (fijo a la derecha en el admin de la tienda).
-- Abre el chat **Asistente Manu**.
-- En varias pantallas, abajo: *“Entendé sobre … preguntándole a Manu”* con
-  preguntas sugeridas que abren el mismo chat.
+Desde varias listas (cupones, categorías, etc.) la sección de ayuda dice
+“preguntándole a Manu” y al tocar una pregunta abre el mismo chat con ese
+texto.
 
-### Para qué sirve
+No depende de un ítem del menú lateral.
 
-Explicar el panel, sugerir pasos y responder dudas de configuración de **esa**
-tienda. No reemplaza las secciones del menú: si hay que crear un cupón, igual
-se hace en **Cupones**.
+### Reglas del asistente
 
-## Reglas del asistente (tienda / WhatsApp)
+1. **Ajustes** → **General**  
+   URL: `/admin/tiendas/{storeHandle}/ajustes/general`
+2. Sección colapsada **Reglas del asistente**  
+   Resumen UI: “Definí reglas para personalizar cómo se comporta tu asistente
+   AI en la web y WhatsApp.”
 
-### Dónde está
+| Acción / campo | Notas |
+|----------------|--------|
+| **Regla** (textarea) | Texto de la instrucción. Placeholder ej.: “nunca uses emojis…”. |
+| **Agregar** | Crea la regla. |
+| **Guardar** / **Borrar** | Por cada regla existente. |
 
-**Ajustes → General → Reglas del asistente**
-(`/admin/tiendas/{storeHandle}/ajustes/general`, sección colapsable).
+Límites visibles en UI:
 
-Texto de ayuda en pantalla: personalizan cómo se comporta el asistente AI en
-**la web y WhatsApp**.
+- Hasta **6** reglas por tienda.
+- Hasta **2024** caracteres por regla.
 
-### Límites
+### WhatsApp (menciones en el panel)
 
-| Límite | Valor |
-|--------|--------|
-| Cantidad de reglas | Hasta **6** por tienda |
-| Largo de cada regla | Hasta **2024** caracteres |
+- Las reglas aplican explícitamente a **web y WhatsApp**.
+- En **Ajustes → General → Contacto** el campo **Número de WhatsApp** es el
+  contacto de **la tienda** (lo que ve el comprador / links), **no** un
+  interruptor del asistente.
+- No hay pestaña “Asistente WhatsApp” aparte en Ajustes.
 
-### Cómo se usan
+### Onboarding / checklist
 
-1. Escribí una **Regla** (ej. “nunca uses emojis en tus respuestas”).
-2. **Agregar**.
-3. Para cambiar una existente: editá el texto → **Guardar**, o borrála.
+En **Resúmen** (home del admin) puede haber un checklist de activación de la
+tienda (productos, categorías, entregas, etc.). Eso **no** es un chat de
+onboarding con Manu; es una lista de tareas del resumen.
 
-## Qué no mezclar
-
-| Cosa | No es |
-|------|--------|
-| **Manu en el panel** | El chat de ayuda del Merchant Center. |
-| **Reglas del asistente** | Instrucciones para el asistente que habla con **compradores** (web/WhatsApp). |
-| **Número de WhatsApp** (Ajustes → contacto) | El teléfono de la tienda; no es lo mismo que las reglas, aunque el asistente pueda usarse por WhatsApp. |
+Los planes (landing / pricing) mencionan “Asistente de IA básico / avanzado /
+proactivo”; eso es marketing de plan, no pantallas distintas dentro del
+Merchant Center.
 
 ## Ejemplo
 
-Querés que el asistente de la tienda no invente precios:
+1. Abrí **¿Te doy una mano?** y preguntá: `¿Cómo creo un cupón de 15%?`
+2. Para tono fijo: **Ajustes → General → Reglas del asistente** →
+   `Respondé siempre en español rioplatense, sin emojis` → **Agregar**
 
-1. **Ajustes → General** → abrí **Reglas del asistente**
-2. Regla: `Si no sabés el precio exacto, pedí que miren el producto en la tienda`
-3. **Agregar**
+## Tips / no confundir
 
-Para una duda de cómo crear un cupón en el panel: abrí **¿Te doy una mano?** y
-preguntale a Manu, o seguí `coupons.md`.
-
-## Tips
-
-- Pocas reglas claras suelen funcionar mejor que un párrafo largo.
-- Si Manu del panel no alcanza, usá la documentación del skill / links de ayuda
-  de cada pantalla.
+- **Manu (admin)** ≠ chatbot de atención al comprador en la tienda pública (comprador).
+- **Reglas del asistente** ≠ **Redirecciones** ni **Notificaciones** (otras
+  secciones de General).
+- **Número de WhatsApp** en Contacto ≠ configuración del canal del asistente.
+- Campañas / Meta / “WhatsApp” en Integraciones son marketing o catálogo, no
+  el chat de Manu.
