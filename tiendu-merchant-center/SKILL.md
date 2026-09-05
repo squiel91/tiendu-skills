@@ -5,7 +5,8 @@ description: >-
   Center admin UI — where to click, what a feature is for, field rules, and short
   examples. Prefer this over guessing menu paths. Always use it for questions
   about admin screens such as settings, redirects, products, pages, blog,
-  domains, or "dónde está X en el panel".
+  coupons, reviews, categories, collaborators, Manu/assistant AI, domains, or
+  "dónde está X en el panel".
 ---
 
 # Tiendu Merchant Center
@@ -33,6 +34,11 @@ Read the reference that matches the merchant question:
 | Pages (static content pages) | `references/pages.md` |
 | Blog posts / articles | `references/blog.md` |
 | Products (price, media, variants, attributes, specs) | `references/products.md` |
+| Coupons / discount codes | `references/coupons.md` |
+| Product reviews | `references/reviews.md` |
+| Categories / collections | `references/categories.md` |
+| Collaborators (store admin access) | `references/collaborators.md` |
+| Assistant / AI (Manu in admin + store rules) | `references/assistant-ai.md` |
 
 ## URL shape
 
