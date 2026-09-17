@@ -5,8 +5,9 @@ description: >-
   UI del Merchant Center: dónde hacer clic, para qué sirve una función, reglas
   de campos y ejemplos cortos. Preferilo antes de adivinar rutas de menú.
   Usalo siempre para preguntas sobre pantallas del admin como ajustes,
-  redirecciones, productos, páginas, blog, cupones, reseñas, categorías,
-  colaboradores, Manu/asistente IA, dominios, o “dónde está X en el panel”.
+  redirecciones, productos, metadatos de producto, --detailed-product-metadata,
+  páginas, blog, cupones, reseñas, categorías, colaboradores, Manu/asistente IA,
+  dominios, o “dónde está X en el panel”.
 ---
 
 # Tiendu Merchant Center
@@ -34,6 +35,7 @@ Leé la referencia que coincida con la pregunta del vendedor:
 | Páginas (contenido estático) | `references/pages.md` |
 | Blog / artículos | `references/blog.md` |
 | Productos (precio, medios, variantes, atributos, especificaciones) | `references/products.md` |
+| Metadatos de producto (`--detailed-product-metadata`, esquema, `product.metadata`) | `references/metadata.md` |
 | Cupones / códigos de descuento | `references/coupons.md` |
 | Reseñas de productos | `references/reviews.md` |
 | Categorías | `references/categories.md` |

@@ -12,7 +12,7 @@ Read the reference that matches your task:
 | Task | Read |
 |------|------|
 | Understanding the file map, authoring surfaces, JSON-vs-Liquid templates, layout entrypoints, Liquid object contracts, pagination behavior, or route conventions | `references/structure-overview.md` |
-| Rendering storefront menus, `menus`/`linklists`, or checking Liquid object shapes | `references/liquid-objects.md` |
+| Rendering storefront menus, `menus`/`linklists`, checking Liquid object shapes, or reading `product.metadata` (enabled by store metadata `--detailed-product-metadata`) | `references/liquid-objects.md` |
 | Image sizes and Liquid filters (`image_url`) | `references/liquid-filters.md` |
 | Adapting the theme to a specific store, brand, catalog, merchandising strategy, content model, or merchant workflow | `references/customization-playbook.md` |
 | CLI initialization, store selection, preview creation or attachment, pulling, pushing, or publishing the theme | `references/previewing-and-deployment.md` |
@@ -32,3 +32,5 @@ These apply regardless of which sub-topic you are working on:
 - Prefer object-based Liquid surfaces over legacy custom data-fetch tags.
 - Preserve Spanish storefront routes and content structure unless the user explicitly asks to change them.
 - Keep changes responsive, accessible, and compatible with section reloads in the theme editor.
+- Merchant photos and other store content images live in the gallery. Use the gallery `url` with `| image_url: size: 'md'` (`sm` / `md` / `lg`). Do not copy seller photos into `src/assets/`.
+- `src/assets/` is for theme chrome (CSS, JS, icons, system logos). Reference those files with `asset_url`.

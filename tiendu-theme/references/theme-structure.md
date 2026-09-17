@@ -138,9 +138,9 @@ Use snippets for:
 
 - `src/config/settings_schema.json` defines editable theme settings
 - `src/config/settings_data.json` stores current values and group section instances
-- `src/assets/*` stores CSS, JS, and other static assets
+- `src/assets/*` stores CSS, JS, icons, and other theme-chrome files. Merchant photos belong in the gallery and are referenced with `image_url`, not copied here.
 
-Use `asset_url` in Liquid when referencing theme assets.
+Use `asset_url` in Liquid when referencing theme assets. Use gallery URLs with `image_url` for store content images.
 
 ## Routes and language conventions
 

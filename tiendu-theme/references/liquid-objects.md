@@ -457,6 +457,9 @@ Pragmatic notes:
 - `related_products_count` is `Lazy` on the real product page object.
 - A setting-selected product does not get those lazy related-product fields.
 - The route also injects `template_suffix` as a top-level helper variable.
+- `metadata` is per-product JSON (`null` when empty). It is not store metadata and does not use `{% metadata %}`.
+- The merchant **Editar metadatos** form exists only when store metadata key `--detailed-product-metadata` exists and has a `jsonSchema`. Values still live on `product.metadata`, not on that store entry’s `data`.
+- Guard missing keys (`product.metadata.brand`) before rendering. Image/product/category refs stay as `{ __type__: 'image'|'product'|'category', id: number | null }`.
 
 ### `product_page`
 
@@ -822,4 +825,5 @@ type ContentBlock =
 - `collection.products` is not generally safe outside `{% paginate %}` on collection pages.
 - A single `collection` setting is more capable than `collection_list` items.
 - A real product page object has lazy `related_products`; a setting-selected product does not.
+- `product.metadata` is per-product JSON enabled in the admin by store metadata `--detailed-product-metadata` plus a `jsonSchema`. Do not use `{% metadata %}` for it.
 - `search` on the home page is not the same as `search` on the search page.

@@ -29,6 +29,7 @@ orden visual puede variar) son:
 | **Media** | Imágenes y video |
 | **Categorías** | En qué categorías aparece |
 | **Características** | Ficha técnica / datos extra (no son variantes) |
+| **Metadatos** | JSON extra por producto. El botón **Editar metadatos** solo aparece si la tienda tiene el metadato `--detailed-product-metadata` con esquema. Ver `metadata.md` |
 | **Optimización de búsqueda (SEO)** | Título y descripción meta + handle |
 | **Publicación** | Activo / Archivado |
 | **Plantilla** | Variante de plantilla del tema, si existe |
@@ -74,6 +75,12 @@ de la tienda.
 
 Lista de datos tipo ficha (material, marca, campos para catálogos, etc.).
 **No generan combinaciones de compra.** Las combinaciones son **Variantes**.
+
+### Metadatos de producto (JSON extra)
+
+Si la tienda tiene el metadato `--detailed-product-metadata` con un esquema,
+el producto muestra **Editar metadatos**. Eso guarda JSON en `product.metadata`,
+no en Características. Ver `metadata.md`.
 
 ### SEO y handle
 

@@ -2,7 +2,7 @@
 
 ## `image_url`
 
-Pick a display size for a catalog image URL:
+Pick a display size for a catalog or gallery image URL. The stored URL is canonical (usually `/lg`); `sm` / `md` / `lg` are CDN variants of the same image, not separate files.
 
 ```liquid
 {{ product.coverImage.url | image_url: size: 'md' }}
@@ -23,3 +23,15 @@ Use the smallest size that still looks sharp. Omit `size` (or pass anything else
   loading="lazy"
 >
 ```
+
+Theme image settings store that same gallery URL string, not the numeric id and not per-size URLs:
+
+```liquid
+{% assign gallery_image_url = section.settings.image.url | default: section.settings.image %}
+<img
+  src="{{ gallery_image_url | image_url: size: 'md' | escape_attr }}"
+  alt="{{ section.settings.image_alt | escape_attr }}"
+>
+```
+
+Do not copy seller or catalog photos into `src/assets/`. Use `asset_url` only for theme chrome (CSS, JS, icons, system logos).
