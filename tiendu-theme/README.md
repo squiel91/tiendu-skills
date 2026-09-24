@@ -1,10 +1,10 @@
 # tiendu-theme
 
-OpenCode skill for working with the official Tiendu base theme. Covers file map and authoring surfaces, JSON-vs-Liquid templates, layout compatibility, Liquid object contracts, pagination, route conventions, store adaptation, brand customization, icon snippets, and CLI-driven preview, sync, and deployment workflows.
+Agent skill for working with the official Tiendu base theme. Covers file map and authoring surfaces, JSON-vs-Liquid templates, layout compatibility, Liquid object contracts and filters, pagination, route conventions, store adaptation, brand customization, icon snippets, and CLI-driven preview, sync, and deployment workflows.
 
 ## Usage
 
-Load this skill in OpenCode before any theme work:
+Install this skill from the repository root with the Skills CLI. Compatible agents can discover it from their skills directory. In OpenCode, load it before theme work:
 
 ```
 /skill tiendu-theme

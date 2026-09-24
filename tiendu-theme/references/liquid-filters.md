@@ -34,4 +34,4 @@ Theme image settings store that same gallery URL string, not the numeric id and 
 >
 ```
 
-Do not copy seller or catalog photos into `src/assets/`. Use `asset_url` only for theme chrome (CSS, JS, icons, system logos).
+Do not copy seller or catalog photos into `assets/`. Use `asset_url` only for theme chrome (CSS, JS, icons, system logos).

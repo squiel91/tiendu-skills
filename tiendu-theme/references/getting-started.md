@@ -2,40 +2,57 @@
 
 Use this reference when you need a quick orientation before editing the official Tiendu base theme.
 
-## Start from `src/`
+## Start at the project root
 
 Work in these directories first:
 
-- `src/layout/`
-- `src/templates/`
-- `src/sections/`
-- `src/blocks/`
-- `src/snippets/`
-- `src/config/`
-- `src/assets/`
+- `layout/`
+- `templates/`
+- `sections/`
+- `blocks/`
+- `snippets/`
+- `config/`
+- `assets/`
 
-Do not treat `dist/` as the source of truth.
+Theme files live at the project root. There is no `src/` / `dist/` split.
 
 ## Quick task-to-surface mapping
 
 Use this map to choose the right surface:
 
-| Task                                                      | Preferred surface                                                   |
-| --------------------------------------------------------- | ------------------------------------------------------------------- |
-| Shared layout, assets, SEO defaults, header/footer groups | `src/layout/theme.liquid`                                           |
-| Merchant-editable page composition                        | `src/templates/*.json`                                              |
-| Code-only template logic or alternative template variants | `src/templates/*.liquid`                                            |
-| Editable section markup and settings                      | `src/sections/*.liquid`                                             |
-| Reusable blocks with their own schema                     | `src/blocks/*.liquid`                                               |
-| Reusable partial markup                                   | `src/snippets/*.liquid`                                             |
-| Theme-level settings                                      | `src/config/settings_schema.json` + `src/config/settings_data.json` |
-| Shared styling                                            | `src/assets/theme.css`                                              |
+| Task                                                      | Preferred surface                                               |
+| --------------------------------------------------------- | --------------------------------------------------------------- |
+| Shared layout, assets, SEO defaults, header/footer groups | `layout/theme.liquid`                                           |
+| Agent-authored page composition (default)                  | `templates/*.liquid` + `{% section %}`                          |
+| Manager-editable composition and parameters                | `templates/*.json` + schema-driven sections                     |
+| Editable section markup and settings                      | `sections/*.liquid`                                             |
+| Reusable blocks with their own schema                     | `blocks/*.liquid`                                               |
+| Reusable partial markup                                   | `snippets/*.liquid`                                             |
+| Theme-level settings                                      | `config/settings_schema.json` + `config/settings_data.json`     |
+| Shared styling                                            | `assets/theme.css`                                              |
+| Image sizes and Liquid filter behavior                    | `liquid-filters.md`                                             |
 
 ## JSON vs Liquid templates
 
-Use `src/templates/*.json` when the merchant should control page composition in the visual customizer.
+For agent-authored storefront work, prefer `templates/*.liquid` and keep composition together in Liquid. Instantiate section files directly from that template:
 
-Use `src/templates/*.liquid` when the template should be code-only.
+```liquid
+{% section 'hero', heading: 'Novedades' %}
+{% section 'featured-collection', collection: 'novedades', products_to_show: 8 %}
+```
+
+The section type must be a quoted literal. Hash values can be literals, variables, or property paths. Compute filtered/complex values first:
+
+```liquid
+{% assign heading = product.title | default: 'Producto destacado' %}
+{% section 'hero', heading: heading, preset: false %}
+```
+
+Omitting `preset` applies the first schema preset, including its default block tree. Use `preset: 'Preset name'` for a named preset or `preset: false` for schema defaults with no preset. The tag may be authored only in `templates/` or `layout/`; never place it in a snippet, section, or block.
+
+If same-name JSON and Liquid templates both exist, JSON wins. Remove the JSON file only when intentionally switching that page to code-owned composition. Parameterized static instances do not appear in the visual customizer.
+
+Choose `templates/*.json` when managers should modify composition or parameters in the personalization panel. In that mode, expose the desired controls in each section's `{% schema %}` and put section instances, settings, blocks, and order in JSON. This is the opt-in merchant-editable mode, not the default for agent-authored composition.
 
 Examples of supported Liquid variants:
 
@@ -50,14 +67,14 @@ These render correctly, but they are not the visual-editor composition surface.
 
 ### Add or change page composition
 
-Edit the relevant JSON template in `src/templates/` when the result should stay merchant-editable.
+By default, use a Liquid template with top-level `{% section %}` tags and ensure no same-name JSON template exists. Use the relevant JSON template in `templates/` only when the result should be parameterized for manager editing in the personalization panel.
 
 Examples:
 
-- `src/templates/index.json`
-- `src/templates/product.json`
-- `src/templates/collection.json`
-- `src/templates/search.json`
+- `templates/index.json`
+- `templates/product.json`
+- `templates/collection.json`
+- `templates/search.json`
 
 JSON templates declare:
 
@@ -67,7 +84,7 @@ JSON templates declare:
 
 ### Add or change a section
 
-Edit or create a section in `src/sections/*.liquid`.
+Edit or create a section in `sections/*.liquid`.
 
 Every editable section should expose its configuration through `{% schema %}`.
 
@@ -75,7 +92,7 @@ That schema drives the Tiendu theme customizer.
 
 ### Add or change a theme block
 
-Use `src/blocks/*.liquid` when a block should own its own markup and schema.
+Use `blocks/*.liquid` when a block should own its own markup and schema.
 
 Prefer block files when:
 
@@ -90,26 +107,28 @@ Key block authoring rules:
 - use schema `presets` when a block should be inserted with default child blocks or default settings
 - render child blocks with `{% content_for 'blocks' %}`
 - preserve `block.tiendu_attributes` on the outer block element when practical
-- keep `{{ content_for_header }}` in `src/layout/theme.liquid` so the platform can inject design-mode editor runtime code
+- keep `{{ content_for_header }}` in `layout/theme.liquid` so the platform can inject design-mode editor runtime code
 
 ### Add or change global settings
 
 Edit:
 
-- `src/config/settings_schema.json` for setting definitions
-- `src/layout/theme.liquid` for layout-level consumption
+- `config/settings_schema.json` for setting definitions
+- `layout/theme.liquid` for layout-level consumption
 
 If the setting affects styling globally, map it to a CSS custom property in the layout and consume it from CSS or section markup.
 
 ### Add or change reusable markup
 
-Use `src/snippets/*.liquid`.
+Use `snippets/*.liquid`.
+
+Snippets cannot instantiate sections. Keep `{% section %}` in the template/layout and use `{% render %}` for reusable snippet markup.
 
 ### Add or change styling
 
 Prefer plain CSS in:
 
-- `src/assets/theme.css`
+- `assets/theme.css`
 
 Use and extend the theme's CSS custom properties rather than introducing a new styling toolchain.
 
@@ -133,4 +152,4 @@ When editing sections:
 - keep section markup self-contained
 - keep settings in schema, not hidden in code
 - prefer CSS variables for live theme-setting updates
-- remember that `src/templates/*.liquid` is renderable but not the visual customizer surface
+- remember that `templates/*.liquid` is renderable but not the visual customizer surface

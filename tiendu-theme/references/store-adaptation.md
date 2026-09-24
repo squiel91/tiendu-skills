@@ -17,15 +17,15 @@ Choose the authoring surface that matches that ownership.
 
 ## Choose the right customization surface
 
-| Store need                                                                         | Preferred implementation                                                                      |
-| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Brand colors, typography, shared visual tokens                                     | theme settings + layout CSS variables + `src/assets/theme.css`                                |
-| Homepage composition that the merchant should keep editing                         | `src/templates/index.json` + reusable sections + presets                                      |
+| Store need                                                                         | Preferred implementation                                                                  |
+| ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Brand colors, typography, shared visual tokens                                     | theme settings + layout CSS variables + `assets/theme.css`                                |
+| Homepage composition that the merchant should keep editing                         | `templates/index.json` + reusable sections + presets                                      |
 | Curated list of products, collections, pages, or articles                          | schema setting pickers such as `product_list`, `collection_list`, `page_list`, `article_list` |
-| Reusable card, badge, trust row, icon/text row, menu block                         | `src/blocks/*.liquid`                                                                         |
-| Shared markup fragment used in multiple sections                                   | `src/snippets/*.liquid`                                                                       |
-| Code-only landing or special template that does not need visual-editor composition | `src/templates/*.liquid`                                                                      |
-| Shared header/footer experience                                                    | layout + section-group JSON + reusable sections                                               |
+| Reusable card, badge, trust row, icon/text row, menu block                         | `blocks/*.liquid`                                                                         |
+| Shared markup fragment used in multiple sections                                   | `snippets/*.liquid`                                                                       |
+| Code-only landing or special template that does not need visual-editor composition | `templates/*.liquid`                                                                      |
+| Shared header/footer experience                                                    | layout + section-group JSON + reusable sections                                           |
 
 ## Prefer configurable content over hardcoded content
 
@@ -49,7 +49,7 @@ When adapting the theme to a store's brand:
 - map those settings to CSS variables in the layout
 - consume those CSS variables in CSS and section markup
 - prefer consistent spacing and type scales over section-by-section one-offs
-- add assets to `src/assets/` and reference them through Liquid helpers
+- add assets to `assets/` and reference them through Liquid helpers
 
 ## Merchandising adaptation patterns
 

@@ -5,53 +5,57 @@ Use this reference for file ownership, template/section structure, and route con
 For Liquid variable shapes and pagination behavior, read:
 
 - `liquid-objects.md`
+- `liquid-filters.md`
 - `liquid-pagination.md`
 
 ## Authoritative structure
 
-This theme is authored directly in `src/`.
+This theme is authored at the project root. Push, pull, and `dev` sync the current folder except ignored paths.
 
 ```text
 theme-root/
+├── tienduignore
 ├── AGENTS.md
-├── README.md
-├── .agents/
-├── src/
-│   ├── layout/
-│   │   └── theme.liquid
-│   ├── layout.liquid
-│   ├── templates/
-│   │   ├── index.json
-│   │   ├── product.json
-│   │   ├── collection.json
-│   │   ├── list-collections.json
-│   │   ├── page.json
-│   │   ├── blog.json
-│   │   ├── article.json
-│   │   ├── search.json
-│   │   ├── 404.json
-│   │   └── *.liquid
-│   ├── sections/
-│   │   ├── *.liquid
-│   │   ├── header-group.json
-│   │   └── footer-group.json
-│   ├── blocks/
-│   │   └── *.liquid
-│   ├── snippets/
-│   │   └── *.liquid
-│   ├── config/
-│   │   ├── settings_schema.json
-│   │   └── settings_data.json
-│   ├── assets/
-│   │   ├── theme.css
-│   │   ├── theme.js
-│   │   └── *
-└── tiendu.config.json
+├── .cursor/
+│   └── skills/
+├── layout/
+│   └── theme.liquid
+├── layout.liquid
+├── templates/
+│   ├── index.json
+│   ├── product.json
+│   ├── collection.json
+│   ├── list-collections.json
+│   ├── page.json
+│   ├── blog.json
+│   ├── article.json
+│   ├── search.json
+│   ├── 404.json
+│   └── *.liquid
+├── sections/
+│   ├── *.liquid
+│   ├── header-group.json
+│   └── footer-group.json
+├── blocks/
+│   └── *.liquid
+├── snippets/
+│   └── *.liquid
+├── config/
+│   ├── settings_schema.json
+│   └── settings_data.json
+└── assets/
+    ├── theme.css
+    ├── theme.js
+    └── *
 ```
+
+`AGENTS.md` and project skills round-trip with the theme unless listed in `tienduignore`. The CLI always skips `.cli/`, `.git/`, `node_modules/`, `.env`, `.env.*`, and `.DS_Store`.
+
+If a repo still has the older `src/` + `dist/` layout, move `src/{layout,templates,sections,blocks,snippets,config,assets}` to the project root and delete `dist/`.
 
 ## Layout entrypoints
 
-`src/layout/theme.liquid` is the preferred global storefront shell.
+`layout/theme.liquid` is the preferred global storefront shell.
 
 It owns:
 
@@ -62,11 +66,11 @@ It owns:
 - header and footer section-group rendering
 - theme editor preview hooks
 
-`src/layout.liquid` is supported as a legacy-compatible fallback when a theme already uses that older entrypoint.
+`layout.liquid` is supported as a legacy-compatible fallback when a theme already uses that older entrypoint.
 
 ## Template modes
 
-### `src/templates/*.json`
+### `templates/*.json`
 
 JSON templates declare page composition for the visual theme editor.
 
@@ -76,9 +80,9 @@ They own:
 - per-instance settings
 - render order
 
-Use JSON templates when the merchant should be able to change composition through the visual customizer.
+Choose JSON templates when managers should be able to change composition or parameters through the personalization panel. Expose those parameters through section schema and store the instance values in JSON.
 
-### `src/templates/*.liquid`
+### `templates/*.liquid`
 
 Liquid templates are supported for storefront rendering, including alternative variants such as:
 
@@ -87,7 +91,23 @@ Liquid templates are supported for storefront rendering, including alternative v
 - `page.foo.liquid`
 - `article.foo.liquid`
 
-Use Liquid templates when the template should be code-only rather than visual-editor composition.
+Prefer Liquid templates for agent-authored composition. Use this code-owned mode unless manager editing in the personalization panel is part of the requirement.
+
+Compose code-owned pages with parameterized section tags:
+
+```liquid
+{% section 'hero', heading: 'Novedades' %}
+{% section 'featured-collection', id: 'home-featured', collection: collection.handle %}
+```
+
+Rules:
+
+- The section type is a quoted literal using letters, numbers, `_`, or `-`.
+- Hash values may be literals, variables, or property paths; use `{% assign %}` first for filtered values.
+- Omitted `preset` uses the first schema preset, a string selects a named preset, and `preset: false` selects none.
+- The tag is valid only when authored in `templates/` or `layout/`, never in snippets, sections, or blocks.
+- Instances and parameters remain code-owned and are not editable in the visual customizer.
+- A same-name JSON template wins, so do not leave it in place for a fully code-owned page.
 
 ## Section groups
 
@@ -95,8 +115,8 @@ Header and footer are not declared inside page template JSON files.
 
 They are owned by:
 
-- `src/sections/header-group.json`
-- `src/sections/footer-group.json`
+- `sections/header-group.json`
+- `sections/footer-group.json`
 
 and rendered through the layout.
 
@@ -134,13 +154,21 @@ Use snippets for:
 - extracted markup fragments
 - helpers shared across sections or templates
 
+Snippets cannot contain `{% section %}`. Instantiate sections in the calling template/layout and keep snippets limited to `{% render %}` partials.
+
 ## Settings and assets
 
-- `src/config/settings_schema.json` defines editable theme settings
-- `src/config/settings_data.json` stores current values and group section instances
-- `src/assets/*` stores CSS, JS, icons, and other theme-chrome files. Merchant photos belong in the gallery and are referenced with `image_url`, not copied here.
+- `config/settings_schema.json` defines editable theme settings
+- `config/settings_data.json` stores current values and group section instances
+- `assets/*` stores CSS, JS, icons, and other theme-chrome files. Merchant photos belong in the gallery and should be referenced with `image_url`.
 
-Use `asset_url` in Liquid when referencing theme assets. Use gallery URLs with `image_url` for store content images.
+Use `asset_url` in Liquid when referencing theme assets. Keep stylesheet links and
+JavaScript entrypoint `<script>` tags in Liquid so the theme-version query is
+preserved. For module-based JavaScript, declare each module's versioned URL in
+a layout-level import map and import only its stable bare name from another
+module; do not put versioned asset URLs, nested CSS `@import`s, or dynamic
+asset paths inside JavaScript. This keeps browser caching aligned with theme
+publishes while retaining normal ES-module organization.
 
 ## Routes and language conventions
 
@@ -154,12 +182,11 @@ The storefront follows Spanish routes:
 
 ## Practical ownership rules
 
-- Layout-wide globals, assets, and CSS variables belong in `src/layout/theme.liquid` when possible.
-- `src/layout.liquid` is a supported fallback for legacy-compatible themes.
-- Page composition belongs in `src/templates/*.json` when it should stay editable in the visual customizer.
-- Code-only template rendering belongs in `src/templates/*.liquid`, including alternative template variants.
-- Editable markup belongs in `src/sections/*.liquid` and should use `{% schema %}`.
-- Reusable block markup belongs in `src/blocks/*.liquid` and should use `{% schema %}`.
-- Reusable markup belongs in `src/snippets/*.liquid`.
-- Theme-level settings belong in `src/config/settings_schema.json` and `src/config/settings_data.json`.
-- Do not edit `dist/`; author in `src/`.
+- Layout-wide globals, assets, and CSS variables belong in `layout/theme.liquid` when possible.
+- `layout.liquid` is a supported fallback for legacy-compatible themes.
+- Agent-authored page composition belongs in `templates/*.liquid` by default, including alternative template variants and top-level parameterized `{% section %}` composition.
+- Page composition belongs in `templates/*.json` when managers should edit it in the personalization panel; parameterize the desired controls through section schema.
+- Editable markup belongs in `sections/*.liquid` and should use `{% schema %}`.
+- Reusable block markup belongs in `blocks/*.liquid` and should use `{% schema %}`.
+- Reusable markup belongs in `snippets/*.liquid`.
+- Theme-level settings belong in `config/settings_schema.json` and `config/settings_data.json`.

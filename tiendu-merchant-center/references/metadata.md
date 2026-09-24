@@ -29,12 +29,16 @@ Si no ves **Editar metadatos**, falta crear esa clave o le falta el esquema.
 ## Cómo habilitarlo
 
 1. **Ajustes → Desarrollo → Metadatos** → crear clave `--detailed-product-metadata`.
-   Crear claves no está en MCP/OpenAPI; hay que hacerlo en el panel.
+   MCP no permite crear claves. Si trabajás por REST, la Merchant API v3 sí lo
+   permite con `POST /api/v3/stores/{storeHandle}/metadata`.
 2. En modo desarrollador, pegar el `jsonSchema` (dialecto de Tiendu, no JSON
    Schema estándar). También se puede `PATCH` el esquema después con
-   `stores.metadata.update`.
+   `stores.metadata.update` o con Merchant API v3.
 3. Abrir un producto: aparece **Editar metadatos**. Guardar escribe
    `stores.products.update` / `stores.products.create` con `input.metadata`.
+
+En las herramientas MCP se usa `input.metadata`. En Merchant API v3 por HTTP,
+`metadata` va directamente en el cuerpo JSON, sin wrapper `input`.
 
 El `data` de `--detailed-product-metadata` no son los valores del producto
 (en el alta igual hay que mandar algo, p. ej. `{}` si el esquema es un objeto).
@@ -52,6 +56,9 @@ el JSON va con el producto. Dejá esa clave privada.
 
 La API **no** valida `product.metadata` contra el esquema; el formulario del
 admin sí. Respetá el esquema para que el vendedor pueda editar lo mismo.
+
+Para REST, Merchant API v3 usa `PATCH /api/v3/stores/{storeHandle}/products/{productId}`
+con el objeto `metadata` en el cuerpo. Ver la [guía técnica de metadatos](https://docs.tiendu.uy/metadata/product-metadata).
 
 No uses `stores.metadata.update` para guardar la marca de un producto.
 

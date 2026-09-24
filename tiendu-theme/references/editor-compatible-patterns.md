@@ -17,9 +17,9 @@ Do not hide merchant-facing configuration in hardcoded Liquid branches when it s
 
 ## Keep composition in JSON when it should remain visual
 
-Use `src/templates/*.json` for visual-editor composition.
+Use `templates/*.json` for visual-editor composition.
 
-Use `src/templates/*.liquid` only when the template should be code-only.
+Use `templates/*.liquid` only when the template should be code-only.
 
 ## Prefer presets over empty experiences
 

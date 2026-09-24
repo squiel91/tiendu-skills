@@ -24,6 +24,33 @@ Typical cases:
 5. Keep the result responsive, accessible, and compatible with the visual customizer when the merchant is expected to edit it.
 6. Check the structure and Liquid references before assuming object shape, route behavior, or editor capabilities.
 
+## Gallery images through MCP
+
+When connected to the store MCP and reusing an existing gallery image:
+
+1. Call `stores.images.list` and select an entry from `data` using its `alt`, `aspectRatio`, and visual content.
+2. Put the entry's `url` string in the theme `image` setting. Do not put its numeric `id` in section or block settings.
+3. Use image ids only in product, category, page, or content operations whose contract explicitly asks for `imageId` or `imageIds`.
+4. If the image is not in the gallery, call `stores.images.createFromUrl` with a public HTTPS source, then use the returned `url`.
+
+For code-owned composition, pass the gallery URL directly:
+
+```liquid
+{% section 'hero', image: 'https://imagedelivery.net/account/image-id/lg', image_alt: 'Descripcion de la imagen' %}
+```
+
+Declare the receiving setting as `{ "type": "image", "id": "image" }`. For manager-owned JSON composition, store the same URL string in the instance's `settings.image`; the personalization panel follows this convention.
+
+Treat `url` as the canonical DTO value instead of expecting separate variant URLs. Derive Cloudflare variants at render time; SVG and other URLs pass through unchanged:
+
+```liquid
+{% assign gallery_image_url = section.settings.image.url | default: section.settings.image %}
+<img
+  src="{{ gallery_image_url | image_url: size: 'lg' | escape_attr }}"
+  alt="{{ section.settings.image_alt | escape_attr }}"
+>
+```
+
 ## Quality bar
 
 - Avoid hardcoding product handles, collection handles, store copy, or trust content unless the task explicitly calls for it.
@@ -31,6 +58,7 @@ Typical cases:
 - Prefer reusable sections or blocks over one-off repeated markup.
 - Keep brand decisions consistent across layout, sections, and assets.
 - Preserve visual-editor compatibility when the composition should remain merchant-editable.
+- Use a gallery image's canonical URL for theme image settings; do not confuse it with resource `imageId` fields.
 
 ## In-depth references
 

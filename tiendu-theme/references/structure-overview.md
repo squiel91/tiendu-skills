@@ -16,18 +16,18 @@ Typical cases:
 
 ## Workflow
 
-1. Start in `src/` and identify whether the change belongs in layout, templates, sections, blocks, snippets, config, or assets.
+1. Start at the project root and identify whether the change belongs in layout, templates, sections, blocks, snippets, config, or assets.
 2. Determine whether the target template is JSON or Liquid before editing page composition.
-3. Use `src/templates/*.json` for visual-customizer composition and treat `src/templates/*.liquid` as code-only templates.
-4. Prefer `src/layout/theme.liquid`; only use `src/layout.liquid` when the theme already depends on that legacy-compatible fallback.
-5. Check the Liquid object, filter, and pagination references before introducing new assumptions about data shape, image sizes, or availability.
+3. Default to `templates/*.liquid` plus top-level `{% section %}` tags for agent-authored composition. Choose `templates/*.json` when managers should edit composition or parameters in the personalization panel; JSON wins if both forms exist.
+4. Prefer `layout/theme.liquid`; only use `layout.liquid` when the theme already depends on that legacy-compatible fallback.
+5. Check the Liquid object and pagination references before introducing new assumptions about data shape or availability.
 6. Keep schema, template JSON, and rendered markup aligned when the merchant should edit the result visually.
 
 ## Quality bar
 
-- Treat `src/` as the source of truth.
-- Do not edit `dist/` directly.
-- Prefer JSON templates for new merchant-editable page composition.
+- Treat the project root as the source of truth. Theme directories live next to `tienduignore`, not under `src/` or `dist/`.
+- Prefer Liquid templates with parameterized sections for agent-authored composition.
+- Use JSON templates and section schema when manager-editable composition or parameters are required.
 - Keep sections schema-driven so the visual customizer can edit them.
 - Prefer object-based Liquid surfaces over legacy custom fetch tags.
 - Preserve Spanish storefront routes and structure unless the user asks otherwise.

@@ -99,23 +99,28 @@ Availability: `Always`
     | 'blog'
     | 'article'
     | '404'
+  query_params: { [key: string]: string | string[] | null }
+  design_mode?: boolean
+  preview_mode?: boolean
 }
 ```
 
 Pragmatic notes:
 
 - This is not the raw web `Request` object.
-- No headers, cookies, method, or query map are exposed here.
+- No headers, cookies, or method are exposed here.
+- `query_params` exposes the parsed URL query string as key-value pairs. A key with a single value is a `string`; a key with multiple values is a `string[]`; a key with no value is `null`.
+- `design_mode` and `preview_mode` are only present during theme editor or preview renders.
 
 ### `settings`
 
 Availability: `Always`
 
-Shape: `Record<string, unknown>` keyed by `src/config/settings_schema.json` ids.
+Shape: `Record<string, unknown>` keyed by `config/settings_schema.json` ids.
 
 Pragmatic notes:
 
-- Values come from `src/config/settings_data.json`.
+- Values come from `config/settings_data.json`.
 - Theme-level `url` settings are resolved to storefront URLs before Liquid sees them.
 - Theme-level `font_picker` settings are resolved to font objects.
 
@@ -269,7 +274,7 @@ content_for_layout: string;
 content_for_header: string;
 ```
 
-`content_for_header` should remain in `src/layout/theme.liquid` so the platform can inject editor-only runtime code in design mode.
+`content_for_header` should remain in `layout/theme.liquid` so the platform can inject editor-only runtime code in design mode.
 
 Editor / preview helpers:
 
@@ -309,6 +314,9 @@ Availability: `Section-only`
   id: string
   type: string
   settings: Record<string, unknown>
+  editor_attributes: string
+  tiendu_attributes: string
+  shopify_attributes: string
   blocks: Array<{
     id: string
     type: string
@@ -337,6 +345,7 @@ Pragmatic notes:
 - Section settings are merged with schema defaults before rendering.
 - Block settings are also merged with schema defaults.
 - Blocks render in section context, so they can read `section.settings.*`.
+- `section.editor_attributes`, `section.tiendu_attributes`, and `section.shopify_attributes` expose the section-level HTML attributes with the same naming convention as block attributes.
 - `block.editor_attributes` is for the theme editor wrapper. Preserve it when a block root element already uses it.
 - Prefer `block.tiendu_attributes` on the outer block element in Tiendu themes.
 - `block.shopify_attributes` is kept as a compatibility alias for Shopify-style block files.
@@ -416,8 +425,7 @@ Backed by: `Product` plus a `ProductDrop`
     name: string
     value: string
   }> | null
-  metadata: unknown
-  sku: string | null
+  metadata: JsonValue | null
   videoUrl: string | null
   isPhysical: boolean
   isListed: boolean
@@ -431,8 +439,8 @@ Backed by: `Product` plus a `ProductDrop`
   publicUrl: string
   unitsSold: number
   templateSuffix: string | null
-  updatedAt: string
-  createdAt: string
+  updatedAt: Date
+  createdAt: Date
 
   related_products?: Product[]
   related_products_count?: number
@@ -536,8 +544,8 @@ Backed by: `Collection` plus route-only sort helpers
   }
   isListed: boolean
   isPublic: boolean
-  updatedAt: string
-  createdAt: string
+  updatedAt: Date
+  createdAt: Date
 
   sort_by: CategorySortBy | null
   default_sort_by: CategorySortBy
@@ -622,8 +630,8 @@ Backed by: `Page`
   handle: string
   coverImage: Image | null
   content: ContentBlock[]
-  url: string
-  publicUrl: string
+  url?: string
+  publicUrl?: string
   seo: {
     title: string | null
     description: string | null
@@ -631,8 +639,8 @@ Backed by: `Page`
   isListed: boolean
   isPublic: boolean
   templateSuffix: string | null
-  updatedAt: string
-  createdAt: string
+  updatedAt: Date
+  createdAt: Date
 }
 ```
 
@@ -674,19 +682,19 @@ Backed by: `Article`
   excerpt: string | null
   coverImage: Image | null
   manager: {
-    name: string
+    name: string | null
   }
   content: ContentBlock[]
-  url: string
-  publicUrl: string
+  url?: string
+  publicUrl?: string
   isListed: boolean
   templateSuffix: string | null
   seo: {
     title: string | null
     description: string | null
   }
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
 }
 ```
 
@@ -714,17 +722,15 @@ template_suffix?: string | null
   id: number
   url: string
   alt: string
-  hasTransparency: boolean
-  height: number
-  width: number
+  aspectRatio: number | null
+  provider: 'cloudflare_images' | 'r2_svg' | 'legacy'
+  providerAssetId: string | null
   storeId?: number | null
   userId?: number
-  updatedAt?: string
-  createdAt?: string
+  updatedAt?: Date
+  createdAt?: Date
 }
 ```
-
-For `<img src>`, use `| image_url: size: 'md'` (`sm` / `md` / `lg`). See `liquid-filters.md`.
 
 ### `AttributeValue`
 
@@ -737,8 +743,8 @@ For `<img src>`, use `| image_url: size: 'md'` (`sm` / `md` / `lg`). See `liquid
   image: Image | null;
   color: string | null;
   note: string | null;
-  updatedAt: string;
-  createdAt: string;
+  updatedAt: Date;
+  createdAt: Date;
 }
 ```
 
@@ -752,8 +758,8 @@ For `<img src>`, use `| image_url: size: 'md'` (`sm` / `md` / `lg`). See `liquid
   displayType: 'radio' | 'dropdown'
   values: AttributeValue[]
   metaBusinessFieldMapping: string | null
-  updatedAt: string
-  createdAt: string
+  updatedAt: Date
+  createdAt: Date
 }
 ```
 
@@ -771,8 +777,8 @@ For `<img src>`, use `| image_url: size: 'md'` (`sm` / `md` / `lg`). See `liquid
   coverImage: Image | null
   attributes: Attribute[]
   isListed: boolean
-  updatedAt: string
-  createdAt: string
+  updatedAt: Date
+  createdAt: Date
 }
 ```
 
@@ -789,8 +795,8 @@ For `<img src>`, use `| image_url: size: 'md'` (`sm` / `md` / `lg`). See `liquid
   images: Image[]
   customerId: number | null
   isListed: boolean
-  updatedAt: string
-  createdAt: string
+  updatedAt: Date
+  createdAt: Date
 }
 ```
 
