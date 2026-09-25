@@ -33,9 +33,9 @@ Si no ves **Editar metadatos**, falta crear esa clave o le falta el esquema.
    permite con `POST /api/v3/stores/{storeHandle}/metadata`.
 2. En modo desarrollador, pegar el `jsonSchema` (dialecto de Tiendu, no JSON
    Schema estándar). También se puede `PATCH` el esquema después con
-   `stores.metadata.update` o con Merchant API v3.
+   `metadata_update` (MCP: `stores.metadata.update`) o con Merchant API v3.
 3. Abrir un producto: aparece **Editar metadatos**. Guardar escribe
-   `stores.products.update` / `stores.products.create` con `input.metadata`.
+   `products_update` / `products_create` con `input.metadata`.
 
 En las herramientas MCP se usa `input.metadata`. En Merchant API v3 por HTTP,
 `metadata` va directamente en el cuerpo JSON, sin wrapper `input`.
@@ -49,10 +49,10 @@ el JSON va con el producto. Dejá esa clave privada.
 
 | Acción | Herramienta |
 |--------|-------------|
-| Ver si el esquema existe | `stores.metadata.get` con `metadataKey`: `--detailed-product-metadata` |
-| Cambiar el esquema | `stores.metadata.update` (`jsonSchema` es un **string** JSON) |
-| Leer valores de un producto | `stores.products.get` → campo `metadata` |
-| Escribir valores | `stores.products.create` o `stores.products.update` → `input.metadata` |
+| Ver si el esquema existe | `metadata_get` con `metadataKey`: `--detailed-product-metadata` |
+| Cambiar el esquema | `metadata_update` (`jsonSchema` es un **string** JSON) |
+| Leer valores de un producto | `products_get` → campo `metadata` |
+| Escribir valores | `products_create` o `products_update` → `input.metadata` |
 
 La API **no** valida `product.metadata` contra el esquema; el formulario del
 admin sí. Respetá el esquema para que el vendedor pueda editar lo mismo.
@@ -60,7 +60,7 @@ admin sí. Respetá el esquema para que el vendedor pueda editar lo mismo.
 Para REST, Merchant API v3 usa `PATCH /api/v3/stores/{storeHandle}/products/{productId}`
 con el objeto `metadata` en el cuerpo. Ver la [guía técnica de metadatos](https://docs.tiendu.uy/metadata/product-metadata).
 
-No uses `stores.metadata.update` para guardar la marca de un producto.
+No uses `metadata_update` para guardar la marca de un producto.
 
 ## Esquema (dialecto Tiendu)
 

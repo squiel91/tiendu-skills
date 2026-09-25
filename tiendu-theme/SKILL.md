@@ -9,7 +9,7 @@ description: Use this skill for work in the official Tiendu base theme. It cover
 
 ### Resolve named previews before inspecting files
 
-When working through Manu or Tiendu MCP tools and the seller names a theme or preview (for example, “en el template de Lienzo”), first call `stores.themePreviews.list` and resolve that name from the returned `name` and `previewKey`. Use the exposed tool name for that capability; loading this skill in Manu already enables it, so another capability search is unnecessary.
+When the seller names a theme or preview (for example, “en el template de Lienzo”), call `theme-previews_list` in Manu or `stores.themePreviews.list` through MCP. Resolve that name from the returned `name` and `previewKey`. Loading this skill in Manu already enables `theme-previews_list`, so you do not need manu_activate_tools for that call.
 
 - Match the full name ignoring case and surrounding whitespace. With exactly one match, use `{ type: "preview", previewKey }` for Manu's theme tools (or the corresponding previewKey input on MCP tools).
 - With multiple matching previews, ask the seller to distinguish them using the returned details. With no match, show the available preview names and ask which they mean. Do not guess a key, create a preview, or fall back to live.

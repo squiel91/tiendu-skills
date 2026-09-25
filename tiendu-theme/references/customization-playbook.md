@@ -28,10 +28,10 @@ Typical cases:
 
 When connected to the store MCP and reusing an existing gallery image:
 
-1. Call `stores.images.list` and select an entry from `data` using its `alt`, `aspectRatio`, and visual content.
+1. Call `images_list` in Manu (`stores.images.list` on MCP) and select an entry from `data` using its `alt`, `aspectRatio`, and visual content.
 2. Put the entry's `url` string in the theme `image` setting. Do not put its numeric `id` in section or block settings.
 3. Use image ids only in product, category, page, or content operations whose contract explicitly asks for `imageId` or `imageIds`.
-4. If the image is not in the gallery, call `stores.images.createFromUrl` with a public HTTPS source, then use the returned `url`.
+4. If the image is not in the gallery, call `images_create-from-url` in Manu (`stores.images.createFromUrl` on MCP) with a public HTTPS source, then use the returned `url`.
 
 For code-owned composition, pass the gallery URL directly:
 
