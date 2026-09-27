@@ -6,10 +6,10 @@ Confirmá el resultado buscado, producto u oferta, público, ubicación, presupu
 
 ## Imágenes con Tiendu y Meta
 
-1. Para una imagen nueva o editada, activá `images_generate`. El resultado se guarda en la galería Tiendu y devuelve un ID y una URL pública. Si el vendedor solo pidió verla, terminá ahí.
+1. En Manu, activá `images_generate` para crear o editar una imagen. El resultado se guarda en la galería Tiendu y devuelve un ID y una URL pública. En otro agente, usá la generación y carga de imágenes de Tiendu disponibles antes de enviarla a Meta. Si el vendedor solo pidió verla, terminá ahí.
 2. Cuando se pidió usarla en un anuncio, activá la herramienta Meta de carga de medios disponible. Si su contrato acepta `upload_source=URL` y `media_type=IMAGE`, entregá la URL pública; usá el `image_hash` u otro identificador devuelto en la creatividad según el esquema actual. Si el contrato admite `image_url`, esa puede ser otra vía. No supongas que el ID de galería Tiendu es un ID de Meta.
 3. Si la creatividad usa una imagen generada con IA y el contrato ofrece `self_ai_disclosure`, declarala con `OPT_IN`. Revisá recorte, texto, marca y coherencia con la página de destino.
-4. Para ver una imagen de un anuncio existente, buscá su URL pública mediante las herramientas Meta. Si existe, activá `images_create-from-url` para incorporarla a la galería Tiendu y `images_inspect` con el ID devuelto. Si Meta solo entrega hash o una URL inaccesible, explicá que no podés inspeccionar esos píxeles.
+4. Para analizar visualmente una imagen de un anuncio existente, buscá su URL pública mediante las herramientas Meta. Si existe, importala a la galería Tiendu con `images_create-from-url` en Manu (`stores.images.createFromUrl` por MCP) y usá `images_inspect` con el ID de galería devuelto. En otro agente, usá su herramienta visual equivalente para inspeccionar esa imagen de galería. El hash o ID de imagen de Meta no sirve como ID de galería. Si Meta solo entrega un hash o una URL inaccesible, explicá que no podés inspeccionar esos píxeles.
 
 ## Creación y cambios
 
