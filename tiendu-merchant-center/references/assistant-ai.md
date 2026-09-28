@@ -71,7 +71,9 @@ todas las personas colaboradoras de esa tienda.
 Manu responde mensajes de texto e imágenes. Las imágenes recibidas se guardan
 en la galería de la tienda. Si Manu necesita aprobación para una acción, envía
 botones como **Rechazar** y **Permitir**; **Permitir siempre** aparece solo
-cuando esa autorización permanente está disponible.
+cuando esa autorización permanente está disponible. WhatsApp limita las
+respuestas normales a la ventana de servicio de 24 horas; si una respuesta ya
+no llega dentro de esa ventana, enviá un mensaje nuevo para continuar.
 
 Si un WhatsApp todavía no está conectado, Manu envía instrucciones fijas para
 vincularlo desde Merchant Center. Si en **Configurar** aparece que WhatsApp no
