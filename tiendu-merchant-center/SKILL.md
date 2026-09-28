@@ -7,7 +7,8 @@ description: >-
   Usalo siempre para preguntas sobre pantallas del admin como ajustes,
   redirecciones, productos, metadatos de producto, --detailed-product-metadata,
   páginas, blog, cupones, reseñas, categorías, colaboradores, Manu/asistente IA,
-  tickets de soporte, dominios, o “dónde está X en el panel”.
+  conexión de Manu por WhatsApp, agentes de IA externos, tickets de soporte,
+  dominios, o “dónde está X en el panel”.
 ---
 
 # Tiendu Merchant Center
@@ -40,7 +41,7 @@ Leé la referencia que coincida con la pregunta del vendedor:
 | Reseñas de productos | `references/reviews.md` |
 | Categorías | `references/categories.md` |
 | Colaboradores (acceso al admin de la tienda) | `references/collaborators.md` |
-| Asistente / IA (Manu en el admin + reglas de la tienda) | `references/assistant-ai.md` |
+| Asistente / IA (Manu en el admin y WhatsApp, reglas de la tienda, agentes de IA externos) | `references/assistant-ai.md` |
 | Tickets de soporte, conversación y enlaces directos | `references/tickets.md` |
 
 ## Forma de las URLs
@@ -57,6 +58,11 @@ numérico.
 Las URLs públicas de **la tienda** usan rutas como `/productos/…`, `/paginas/…`,
 `/blog/…` en el hostname de la tienda — nunca pongas el dominio completo en
 campos de handle o de “desde” en redirecciones.
+
+La documentación pública para desarrolladores y agentes de IA está en
+[`docs.tiendu.uy`](https://docs.tiendu.uy). Para conectar un agente externo con
+Tiendu, empezá por [Work with your AI agent](https://docs.tiendu.uy/ai-agent);
+no inventes pasos específicos de un proveedor si esa guía no los cubre.
 
 ## Reglas de autoría (para secciones futuras)
 
