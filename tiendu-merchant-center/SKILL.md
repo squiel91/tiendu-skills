@@ -7,7 +7,7 @@ description: >-
   Usalo siempre para preguntas sobre pantallas del admin como ajustes,
   redirecciones, productos, metadatos de producto, --detailed-product-metadata,
   páginas, blog, cupones, reseñas, categorías, colaboradores, Manu/asistente IA,
-  dominios, o “dónde está X en el panel”.
+  tickets de soporte, dominios, o “dónde está X en el panel”.
 ---
 
 # Tiendu Merchant Center
@@ -41,6 +41,7 @@ Leé la referencia que coincida con la pregunta del vendedor:
 | Categorías | `references/categories.md` |
 | Colaboradores (acceso al admin de la tienda) | `references/collaborators.md` |
 | Asistente / IA (Manu en el admin + reglas de la tienda) | `references/assistant-ai.md` |
+| Tickets de soporte, conversación y enlaces directos | `references/tickets.md` |
 
 ## Forma de las URLs
 
