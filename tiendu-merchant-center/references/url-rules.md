@@ -9,7 +9,7 @@ tienda y mantiene la URL que abrió el visitante.
 ## Dónde está
 
 Entrá a **Ajustes → Tu tienda → Redirecciones y Reescrituras**:
-`/admin/tiendas/{storeHandle}/ajustes/tu-tienda#redirects`.
+`/admin/tiendas/{storeHandle}/ajustes/tu-tienda#url-rules`.
 Usá **Agregar regla**, o tocá una fila para editarla o borrarla. La lista permite
 buscar por **Desde** o **Hacia**.
 
