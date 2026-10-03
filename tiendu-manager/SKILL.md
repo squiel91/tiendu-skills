@@ -1,6 +1,6 @@
 ---
 name: tiendu-manager
-description: Use this skill when managing Tiendu store resources through Merchant API v3, including pages, coupons, store metadata, and product metadata.
+description: Use this skill when managing Tiendu store resources through Merchant API v3, including URL rules for redirects and rewrites, pages, coupons, store metadata, and product metadata.
 ---
 
 # Tiendu Manager

@@ -5,7 +5,8 @@ description: >-
   UI del Merchant Center: dónde hacer clic, para qué sirve una función, reglas
   de campos y ejemplos cortos. Preferilo antes de adivinar rutas de menú.
   Usalo siempre para preguntas sobre pantallas del admin como ajustes,
-  redirecciones, reescrituras, productos, metadatos de producto, --detailed-product-metadata,
+  reglas de URL para redirecciones y reescrituras, productos, metadatos de producto,
+  --detailed-product-metadata,
   páginas, blog, cupones, reseñas, categorías, colaboradores, Manu/asistente IA,
   conexión de Manu por WhatsApp, agentes de IA externos, tickets de soporte,
   dominios, o “dónde está X en el panel”.

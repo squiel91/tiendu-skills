@@ -1,6 +1,6 @@
 ---
 name: tiendu-theme
-description: Use this skill for work in the official Tiendu base theme. It covers theme structure, JSON-vs-Liquid templates, Liquid objects and filters (including image sizes), pagination, routes, store adaptation, icon snippets, and CLI preview and deployment. Always use it when editing theme files, adapting the theme to a store or brand, working with gallery images, adding icons, or using Tiendu CLI theme commands.
+description: Use this skill for work in the official Tiendu base theme, including theme links and canonical tags when a store uses URL rules for redirects and rewrites. It covers theme structure, JSON-vs-Liquid templates, Liquid objects and filters (including image sizes), pagination, routes, store adaptation, icon snippets, and CLI preview and deployment. Always use it when editing theme files, adapting the theme to a store or brand, working with gallery images, adding icons, or using Tiendu CLI theme commands.
 ---
 
 # Tiendu Theme

@@ -1,6 +1,6 @@
 ---
 name: tiendu-functions
-description: Crear, editar y diagnosticar endpoints JavaScript server-side de Tiendu. Cargá este skill solo cuando el pedido requiera una Función, endpoint o integración con código; no para operaciones normales que ya tengan herramientas de Tiendu.
+description: Crear, editar y diagnosticar endpoints JavaScript server-side de Tiendu, incluidos aliases mediante reglas de URL para redirecciones y reescrituras. Cargá este skill solo cuando el pedido requiera una Función, endpoint o integración con código; no para operaciones normales que ya tengan herramientas de Tiendu.
 ---
 
 # Funciones de Tiendu
