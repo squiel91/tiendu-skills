@@ -180,6 +180,13 @@ The storefront follows Spanish routes:
 - `/blog`
 - `/busqueda`
 
+Store URL rules may give these routes public aliases. A rewrite keeps the
+browser URL while dispatching to the default route; it does not change resource
+`url`/`publicUrl`, resource-menu links, sitemap entries, or merchant preview links.
+If requested, adapt theme links with Liquid/JavaScript or add a redirect from the
+original path. Canonical tags remain theme-owned. Use URL-rule tools for aliases;
+a theme edit is not required to configure a rewrite.
+
 ## Practical ownership rules
 
 - Layout-wide globals, assets, and CSS variables belong in `layout/theme.liquid` when possible.

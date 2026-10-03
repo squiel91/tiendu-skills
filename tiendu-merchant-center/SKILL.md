@@ -5,7 +5,7 @@ description: >-
   UI del Merchant Center: dónde hacer clic, para qué sirve una función, reglas
   de campos y ejemplos cortos. Preferilo antes de adivinar rutas de menú.
   Usalo siempre para preguntas sobre pantallas del admin como ajustes,
-  redirecciones, productos, metadatos de producto, --detailed-product-metadata,
+  redirecciones, reescrituras, productos, metadatos de producto, --detailed-product-metadata,
   páginas, blog, cupones, reseñas, categorías, colaboradores, Manu/asistente IA,
   conexión de Manu por WhatsApp, agentes de IA externos, tickets de soporte,
   dominios, o “dónde está X en el panel”.
@@ -32,7 +32,7 @@ Leé la referencia que coincida con la pregunta del vendedor:
 
 | Tema | Leer |
 |------|------|
-| Redirecciones de rutas (URL vieja → URL nueva en la tienda) | `references/redirects.md` |
+| Redirecciones y Reescrituras (rutas exactas, prefijos y aliases de Funciones) | `references/redirects.md` |
 | Páginas (contenido estático) | `references/pages.md` |
 | Blog / artículos | `references/blog.md` |
 | Productos (precio, medios, variantes, atributos, especificaciones) | `references/products.md` |
@@ -57,7 +57,8 @@ numérico.
 
 Las URLs públicas de **la tienda** usan rutas como `/productos/…`, `/paginas/…`,
 `/blog/…` en el hostname de la tienda — nunca pongas el dominio completo en
-campos de handle o de “desde” en redirecciones.
+campos de handle o de “desde” en reglas de URL. Las rutas públicas anteriores
+son las predeterminadas; el vendedor puede crear reescrituras.
 
 La documentación pública para desarrolladores y agentes de IA está en
 [`docs.tiendu.uy`](https://docs.tiendu.uy). Para conectar un agente externo con

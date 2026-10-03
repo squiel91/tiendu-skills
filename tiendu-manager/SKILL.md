@@ -19,4 +19,5 @@ Send request fields directly as JSON. Individual-resource operations return the 
 |------|------|
 | Creating, listing, viewing, updating, or deleting store pages | `references/pages.md` |
 | Creating, listing, viewing, updating, or deleting coupons | `references/coupons.md` |
+| Store URL redirects, rewrites, exact/prefix matching, or Function aliases | `references/url-rules.md` |
 | Reading or writing store metadata or product metadata | `references/metadata.md` |

@@ -1,61 +1,69 @@
-# Redirecciones (rutas de la tienda)
+# Redirecciones y Reescrituras
 
-## Qué es
+## Qué hacen
 
-Una **redirección** manda a quien visita una ruta vieja de la tienda hacia otra
-ruta (o hacia un sitio externo). Sirve cuando cambiás el handle de un producto,
-una página, una categoría o un post, o cuando migrás links antiguos.
-
-Esto es distinto de:
-
-- **Redirección de dominio** (en Dominios): manda *todo* un dominio a otro lugar.
-- El tilde **“Crear redirección…”** al editar el handle de un producto/página/etc.:
-  crea sola la redirección viejo → nuevo al guardar.
+Una **redirección (301)** envía al visitante al destino y cambia la URL del
+navegador. Una **reescritura** atiende la ruta desde otro destino de la misma
+tienda y mantiene la URL que abrió el visitante.
 
 ## Dónde está
 
-1. Entrá a la tienda en el admin.
-2. **Ajustes** → **General**  
-   URL: `/admin/tiendas/{storeHandle}/ajustes/general`
-3. Abrí la sección **Redirecciones** (está colapsada por defecto).
-4. **Agregar redirección**, o tocá una fila para editarla o borrarla.
-
-También podés buscar en la lista por **Desde** o **Hacia**.
+Entrá a **Ajustes → Tu tienda → Redirecciones y Reescrituras**:
+`/admin/tiendas/{storeHandle}/ajustes/tu-tienda#redirects`.
+Usá **Agregar regla**, o tocá una fila para editarla o borrarla. La lista permite
+buscar por **Desde** o **Hacia**.
 
 ## Campos
 
-| Campo UI | Qué poner | Reglas |
-|----------|-----------|--------|
-| **Desde** | Ruta vieja en *esta* tienda | Debe empezar con `/`. **Sin dominio** (el dominio ya es el de la tienda). Ejemplo: `/productos/remera-vieja`, no `https://mitienda.tiendu.uy/productos/…`. |
-| **Hacia** | Destino | Ruta de la tienda que empieza con `/`, **o** una URL externa `http://…` / `https://…`. |
+| Campo | Uso |
+| --- | --- |
+| **Acción** | **Redirección (301)** o **Reescritura**. |
+| **Coincidencia exacta** | Marcada: solo la ruta indicada. Desmarcada: esa ruta y sus subrutas, conservando el resto del path. |
+| **Desde** | Ruta en esta tienda, empezando con `/`, sin dominio, query ni fragmento. |
+| **Hacia** | Ruta local. Una redirección también puede apuntar a una URL externa `http://…` o `https://…`. |
 
-Otras reglas:
+No uses `*`: para un prefijo, escribí `/prendas` y desmarcá **Coincidencia exacta**.
+El prefijo coincide con `/prendas` y `/prendas/remera`, pero no con `/prendas-extra`.
+Las coincidencias exactas ganan; luego gana el prefijo más largo. Un mismo origen
+puede tener una regla exacta y otra por prefijo, pero no dos del mismo tipo.
+Las queries entrantes se conservan; sus valores prevalecen sobre los del destino.
 
-- Desde y Hacia no pueden ser iguales.
-- No puede haber dos redirecciones con el mismo **Desde** en la misma tienda.
-- Varias barras seguidas se normalizan (`//` → `/`).
+## Ejemplos
 
-## Ejemplo
+| Acción | Desde | Hacia | Coincidencia exacta |
+| --- | --- | --- | --- |
+| Reescritura | `/landing` | `/paginas/landing` | Sí |
+| Reescritura | `/prendas` | `/productos` | No |
+| Redirección (301) | `/productos` | `/prendas` | No |
+| Reescritura | `/calculadora` | `/tiendu/functions/calculadora` | Sí |
+| Redirección (301) | `/promo` | `https://example.com/landing` | Sí |
 
-El producto pasó de `/productos/remera-azul` a `/productos/remera-azul-2026`.
+Las dos reglas de prendas trabajan juntas: el link original redirige a
+`/prendas/remera`, y esa ruta renderiza el producto. Una reescritura se despacha
+una sola vez y no vuelve a evaluar reglas sobre su destino.
 
-| Campo | Valor |
-|-------|--------|
-| Desde | `/productos/remera-azul` |
-| Hacia | `/productos/remera-azul-2026` |
+No hay nombres de rutas reservados. El destino conserva sus controles de acceso,
+rate limits, método, body, cookies y headers. El código de una Función recibe la
+URL efectiva del destino. Las reescrituras no permiten dominios externos ni URLs
+que comiencen con `//`. Las reglas vivas no se aplican en hosts de preview.
 
-Quien abra el link viejo en la tienda termina en el nuevo.
+## Enlaces y SEO
 
-Destino externo (ej. campaña):
+Las reglas no cambian los `url`/`publicUrl` de productos, páginas o categorías,
+los menús de recursos, el sitemap ni **Ver en la tienda**. El vendedor puede
+agregar una redirección desde la ruta original o adaptar links con Liquid o
+JavaScript. El canonical lo decide el tema; no lo cambies sin que el vendedor lo
+pida. Cambiar un canonical no requiere una Función.
 
-| Campo | Valor |
-|-------|--------|
-| Desde | `/promo-verano` |
-| Hacia | `https://instagram.com/mitienda` |
+El tilde **Crear redirección de ANTERIOR a NUEVO** al cambiar un handle sigue
+creando una redirección exacta; no reemplaza una reescritura del vendedor.
+Para redirigir un dominio entero, usá **Ajustes → Tienda online → Dominio**.
 
-## Tips para responderle al vendedor
+## Herramientas de Manu
 
-- Si pega un link completo en **Desde**, pedile solo el path (`/…`).
-- Si cambió el handle desde el editor del producto/página, recordale el tilde
-  **Crear redirección de ANTERIOR a NUEVO** (viene marcado por defecto).
-- Si quiere redirigir un *dominio entero*, mandalo a **Ajustes → Dominios**, no a esta lista.
+Usá `url-rules_list`, `url-rules_create`, `url-rules_update` y `url-rules_delete`
+(herramientas MCP `stores.url-rules.*`). Los campos son `from`, `to`, `action`
+(`redirect`/`rewrite`) y `exactMatch`. Crear omitiendo los dos últimos conserva
+el comportamiento anterior: redirección exacta. Actualizar o borrar usa
+`urlRuleId`. No crees una Función ni edites código del tema para configurar una
+regla que ya está soportada por estas herramientas.
