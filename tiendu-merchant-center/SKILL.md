@@ -32,7 +32,7 @@ Leé la referencia que coincida con la pregunta del vendedor:
 
 | Tema | Leer |
 |------|------|
-| Redirecciones y Reescrituras (rutas exactas, prefijos y aliases de Funciones) | `references/redirects.md` |
+| Redirecciones y Reescrituras (rutas exactas, prefijos y aliases de Funciones) | `references/url-rules.md` |
 | Páginas (contenido estático) | `references/pages.md` |
 | Blog / artículos | `references/blog.md` |
 | Productos (precio, medios, variantes, atributos, especificaciones) | `references/products.md` |

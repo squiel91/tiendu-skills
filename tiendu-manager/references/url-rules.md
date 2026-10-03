@@ -1,7 +1,7 @@
 # Store URL rules
 
 For exact fields and transport examples, read the public guide at
-`https://docs.tiendu.uy/api/reference/redirects/url-rules.md`.
+`https://docs.tiendu.uy/api/reference/url-rules/overview.md`.
 
 Use MCP `stores.url-rules.list`, `.create`, `.update`, and `.delete` for the full
 feature. Discover the exposed tool schemas; the connection supplies store scope.
@@ -24,10 +24,9 @@ pair works without a loop. Queries are preserved. Rewrite destinations must be
 local paths; redirects may target external HTTP(S) URLs. Generated resource URLs
 and sitemap links remain unchanged, and canonical tags belong to the theme.
 
-Merchant API v3 `/redirects` remains a compatibility interface with `fromPath`
-and `toPath`. It creates exact 301 redirects; responses now include `action` and
-`exactMatch`. Patches retain the current action/matching mode. Use the URL-rule
-MCP tools for new modes rather than sending unsupported fields to v3.
+Merchant API v3 uses `/api/v3/stores/{storeHandle}/url-rules` and
+`/url-rules/{urlRuleId}`. Create/update bodies are flat JSON with `from`, `to`,
+`action`, and `exactMatch`. Both actions and matching modes are supported.
 
 OpenAPI v2 also exposes `/api/v2/stores/{storeId}/url-rules` and
 `/api/v2/stores/{storeId}/url-rules/{urlRuleId}`. Use its `input` wrapper for
