@@ -91,7 +91,7 @@ no en Características. Ver `metadata.md`.
 
 Si cambiás el handle de un producto ya guardado, aparece el tilde
 **Crear redirección de ANTERIOR a NUEVO** (activado por defecto). Ver
-`redirects.md`.
+`url-rules.md`.
 
 ### Publicación
 

@@ -69,7 +69,7 @@ Armá el árbol (menú desplegable en temas que lo soportan).
 
 Si cambiás el handle de una categoría ya guardada, aparece el tilde
 **Crear redirección de ANTERIOR a NUEVO** (activado por defecto). Ver
-`redirects.md`.
+`url-rules.md`.
 
 ### Publicación
 

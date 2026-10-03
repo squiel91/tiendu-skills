@@ -37,7 +37,7 @@ En la tienda se ven en `/paginas/{handle}`.
 
 Si editás una página existente y cambiás el handle, aparece el tilde
 **Crear redirección de ANTERIOR a NUEVO** (activado por defecto). Dejalo
-marcado para no romper links viejos. Ver también `redirects.md`.
+marcado para no romper links viejos. Ver también `url-rules.md`.
 
 ## Ejemplo
 

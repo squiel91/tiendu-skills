@@ -38,7 +38,7 @@ En la tienda se ven en `/blog/{handle}`.
 ## Al cambiar el handle
 
 Igual que páginas: tilde **Crear redirección de ANTERIOR a NUEVO** al guardar
-un handle distinto. Ver `redirects.md`.
+un handle distinto. Ver `url-rules.md`.
 
 ## Ejemplo
 
