@@ -9,22 +9,23 @@ o en el mensaje.
 
 ## Dónde está
 
-Menú: **Ajustes** → pestaña **Tickets** (antes de **Suscripción**).
+Menú: **Ajustes** → **Tiendu** → pestaña **Soporte** (después de **Suscripción**
+y **Manu e IA**).
 
 URL de la bandeja:
 
 ```text
-/admin/tiendas/{storeHandle}/ajustes/tickets
+/admin/tiendas/{storeHandle}/ajustes/tiendu#soporte
 ```
 
 Para abrir directamente un ticket, agregá su número como `ticketId`:
 
 ```text
-/admin/tiendas/{storeHandle}/ajustes/tickets?ticketId={ticketId}
+/admin/tiendas/{storeHandle}/ajustes/tiendu?ticketId={ticketId}#soporte
 ```
 
-Por ejemplo: `/admin/tiendas/tienda-lucas/ajustes/tickets?ticketId=123` abre el
-ticket **#123** de esa tienda. Las notificaciones de tickets también llevan a
+Por ejemplo: `/admin/tiendas/tienda-lucas/ajustes/tiendu?ticketId=123#soporte`
+abre el ticket **#123** de esa tienda. Las notificaciones de tickets también llevan a
 este enlace. El link requiere acceso al Merchant Center de esa tienda.
 
 Al seleccionar un ticket desde la bandeja, la dirección del navegador no se

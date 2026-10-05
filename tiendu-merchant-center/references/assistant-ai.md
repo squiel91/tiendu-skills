@@ -26,8 +26,8 @@ No depende de un ítem del menú lateral.
 
 ### Reglas del asistente
 
-1. **Ajustes** → **IA**
-   URL: `/admin/tiendas/{storeHandle}/ajustes/ia`
+1. **Ajustes** → **Tiendu** → pestaña **Manu e IA**
+   URL: `/admin/tiendas/{storeHandle}/ajustes/tiendu#manu`
 2. Sección **Reglas del asistente**.
    Personaliza cómo responde Manu en el panel y WhatsApp.
 
@@ -44,7 +44,7 @@ Límites visibles en UI:
 
 ### Aplicaciones de Manu: conectar WhatsApp
 
-En **Ajustes** → **IA**, buscá la sección **Aplicaciones de Manu** y la tarjeta
+En **Ajustes** → **Tiendu** → **Manu e IA**, buscá la sección **Aplicaciones de Manu** y la tarjeta
 **WhatsApp**. Manu puede responder los mensajes que le envíes desde la cuenta
 conectada; no inicia conversaciones ni manda avisos proactivos de pedidos.
 
@@ -78,7 +78,7 @@ no llega dentro de esa ventana, enviá un mensaje nuevo para continuar.
 Si un WhatsApp todavía no está conectado, Manu envía instrucciones fijas para
 vincularlo desde Merchant Center. Si en **Configurar** aparece que WhatsApp no
 está disponible para Manu, indicá que debe contactar a soporte desde
-**Ajustes → Tickets**.
+**Ajustes → Tiendu → Soporte**.
 
 ### Trabajar con otro agente de IA
 
@@ -107,11 +107,11 @@ Merchant Center.
 ## Ejemplo
 
 1. Abrí **¿Te doy una mano?** y preguntá: `¿Cómo creo un cupón de 15%?`
-2. Para tono fijo: **Ajustes → IA → Reglas del asistente** →
+2. Para tono fijo: **Ajustes → Tiendu → Manu e IA → Reglas del asistente** →
    `Respondé siempre en español rioplatense, sin emojis` → **Agregar**
 
 ## Tips / no confundir
 
 - **Manu (admin)** ≠ chatbot de atención al comprador en la tienda pública (comprador).
 - **Manu por WhatsApp** ≠ un agente externo conectado mediante MCP.
-- **Reglas del asistente** se configuran en **Ajustes → IA**.
+- **Reglas del asistente** se configuran en **Ajustes → Tiendu → Manu e IA**.
