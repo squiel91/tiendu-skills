@@ -1,22 +1,23 @@
 ---
 name: tiendu-theme
-description: Use this skill for work in the official Tiendu base theme, including theme links and canonical tags when a store uses URL rules for redirects and rewrites. It covers theme structure, JSON-vs-Liquid templates, Liquid objects and filters (including image sizes), pagination, routes, store adaptation, icon snippets, and CLI preview and deployment. Always use it when editing theme files, adapting the theme to a store or brand, working with gallery images, adding icons, or using Tiendu CLI theme commands.
+description: Use this skill for work in the official Tiendu base theme, including theme links and canonical tags when a store uses URL rules for redirects and rewrites. It covers theme structure, JSON-vs-Liquid templates, Liquid objects and filters (including image sizes), pagination, routes, store adaptation, icon snippets, and Git preview and deployment. Always use it when editing theme files, adapting the theme to a store or brand, working with gallery images, adding icons, or using Tiendu CLI theme commands.
 ---
 
 # Tiendu Theme
 
 ## How to use this skill
 
-### Resolve named previews before inspecting files
+### Manu: Git dentro del entorno persistente
 
-When the seller names a theme or preview (for example, “en el template de Lienzo”), call `theme-previews_list` in Manu or `stores.themePreviews.list` through MCP. Resolve that name from the returned `name` and `previewKey`. Loading this skill in Manu already enables `theme-previews_list`, so you do not need manu_activate_tools for that call.
+Usá `bash` y `/theme`, el clon Git de esta tienda. Leé `tiendu-bash` para el entorno. Las herramientas theme_* y theme-previews_* y las APIs de código fueron retiradas.
 
-- Match the full name ignoring case and surrounding whitespace. With exactly one match, use `{ type: "preview", previewKey }` for Manu's theme tools (or the corresponding previewKey input on MCP tools).
-- With multiple matching previews, ask the seller to distinguish them using the returned details. With no match, show the available preview names and ask which they mean. Do not guess a key, create a preview, or fall back to live.
-- Resolve the target before listing, searching, or reading theme files. A named theme is not a reason to search pages or template suffixes. An explicit file path or template suffix is a different request.
-- Keep the resolved preview across reads, plans, writes, verification, and follow-ups such as “continua.” Reuse its known key unless the seller changes the target or the tool reports it is unavailable. Live edits require an explicit live target; publishing is a separate action.
+Hacé `cd /theme; git fetch origin; git branch` para inspeccionar las ramas. Un preview es una rama distinta de live, incluyendo ramas migradas legacy/*. Si el vendedor nombró un preview y su rama no puede identificarse con certeza, pedí ese dato; no inventes una equivalencia entre nombre, previewKey y rama.
 
-For Manu, continue with the available theme workspace tools and their schemas; CLI setup/deployment references are only needed when actually using the CLI.
+Creá una rama con `git switch -c nombre`, editá archivos, revisá `git diff`, hacé `git add -A` y `git commit -m 'mensaje'`, y `git push origin nombre`. El push devuelve la URL de la vista previa. Conservá esa rama en los siguientes turnos.
+
+Para publicar: traé los commits recientes con fetch, integrá la vista previa en live con merge local y `git push origin live`. Personalizar crea un commit al Guardar; preservá sus cambios e IDs JSON. Ante conflictos, resolvelos localmente y commit; `git merge --abort` permite abandonar la integración. Live no admite force push: deshacé con `git revert SHA`. Las reescrituras/eliminaciones de previews de Manu pertenecen al vendedor que los creó.
+
+No agregues una consulta de verificación tras el push. La validación/publicación corresponde al servidor Git; inspección visual y navegador están pendientes. Las referencias del CLI son solo para clientes externos compatibles, no para el entorno de Manu.
 
 Read the reference that matches your task:
 
