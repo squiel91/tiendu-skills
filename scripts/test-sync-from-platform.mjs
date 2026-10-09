@@ -7,7 +7,9 @@ import { fileURLToPath } from 'node:url'
 import test from 'node:test'
 
 const script = resolve(dirname(fileURLToPath(import.meta.url)), '../sync-from-platform.sh')
-const names = ['tiendu-theme', 'tiendu-manager', 'tiendu-merchant-center', 'tiendu-bash', 'tiendu-functions', 'tiendu-meta-ads']
+const names = ['tiendu-docs', 'tiendu-theme', 'tiendu-meta-ads']
+const internal = ['tiendu-bash']
+const retired = ['tiendu-manager', 'tiendu-functions']
 const run = (command, args, cwd) => spawnSync(command, args, { cwd, encoding: 'utf8' })
 function git(cwd, ...args) {
 	const result = run('git', args, cwd)
@@ -19,7 +21,7 @@ function fixture(t) {
 	t.after(() => rmSync(root, { recursive: true, force: true }))
 	const repo = join(root, 'skills')
 	const platform = join(root, 'platform')
-	const source = join(platform, 'apps/merchant-center/src/lib/server/modules/manu/skills')
+	const source = join(platform, 'packages/skills')
 	const remote = join(root, 'remote.git')
 	mkdirSync(repo)
 	git(root, 'init', '--bare', remote)
@@ -30,10 +32,16 @@ function fixture(t) {
 	copyFileSync(script, join(repo, 'sync-from-platform.sh'))
 	writeFileSync(join(repo, 'README.md'), 'Keep repository metadata\n')
 	writeFileSync(join(repo, 'AGENTS.md'), 'Keep repository instructions\n')
-	for (const name of names) {
+	const config = {}
+	for (const name of [...names, ...internal]) {
+		config[name] = { manu: true, public: names.includes(name), docs: false }
 		mkdirSync(join(source, name, 'references'), { recursive: true })
 		writeFileSync(join(source, name, 'SKILL.md'), `Current ${name}\n`)
 		writeFileSync(join(source, name, 'references/current.md'), 'Current reference\n')
+		writeFileSync(join(source, name, 'references/manu.md'), 'Manu-only\n')
+	}
+	writeFileSync(join(source, 'skills.config.json'), JSON.stringify(config))
+	for (const name of [...names, ...internal, ...retired]) {
 		mkdirSync(join(repo, name), { recursive: true })
 		writeFileSync(join(repo, name, 'SKILL.md'), `Old ${name}\n`)
 		writeFileSync(join(repo, name, 'obsolete.md'), 'Remove this file\n')
@@ -44,7 +52,7 @@ function fixture(t) {
 	return { repo, source, remote, publish: (...args) => run('bash', [join(repo, 'sync-from-platform.sh'), '--platform', platform, ...args], root) }
 }
 
-test('publishing exports all six skills, removes old files, and pushes the commit', t => {
+test('publishing exports the public skills without manu.md, removes retired skills, and pushes', t => {
 	const f = fixture(t)
 	const before = git(f.repo, 'rev-parse', 'HEAD')
 	const result = f.publish()
@@ -52,7 +60,11 @@ test('publishing exports all six skills, removes old files, and pushes the commi
 	for (const name of names) {
 		assert.equal(readFileSync(join(f.repo, name, 'SKILL.md'), 'utf8'), `Current ${name}\n`)
 		assert.equal(existsSync(join(f.repo, name, 'obsolete.md')), false)
+		assert.equal(existsSync(join(f.repo, name, 'references/manu.md')), false)
+		assert.equal(readFileSync(join(f.repo, name, 'references/current.md'), 'utf8'), 'Current reference\n')
 	}
+	for (const name of [...internal, ...retired]) assert.equal(existsSync(join(f.repo, name)), false)
+	assert.equal(git(f.repo, 'ls-files', ...internal, ...retired), '')
 	assert.equal(readFileSync(join(f.repo, 'README.md'), 'utf8'), 'Keep repository metadata\n')
 	assert.equal(readFileSync(join(f.repo, 'AGENTS.md'), 'utf8'), 'Keep repository instructions\n')
 	assert.equal(git(f.repo, 'ls-files', 'AGENTS.md', 'sync-from-platform.sh'), 'AGENTS.md\nsync-from-platform.sh')

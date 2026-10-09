@@ -4,14 +4,14 @@ set -euo pipefail
 SKILLS_REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 PLATFORM_ROOT="$SKILLS_REPO/../platform"
 COPY_ONLY=false
-SKILLS=(tiendu-theme tiendu-manager tiendu-merchant-center tiendu-bash tiendu-functions tiendu-meta-ads)
 
 usage() {
 	cat <<'EOF'
 Usage: ./sync-from-platform.sh [--platform PATH] [--copy-only]
 
-Copy the canonical skills from ../platform, commit the exported skill folders,
-and push the current branch to origin. Requires a clean skills checkout.
+Copy the skills flagged "public" in the monorepo's packages/skills/skills.config.json,
+skipping Manu-only manu.md files, remove skill folders that are no longer public,
+commit the result, and push the current branch to origin. Requires a clean checkout.
 
   --platform PATH  Use another platform checkout as the source
   --copy-only      Copy the files for review without committing or pushing
@@ -31,19 +31,36 @@ while [[ $# -gt 0 ]]; do
 	esac
 done
 
-for command in git rsync; do
+for command in git rsync node; do
 	command -v "$command" >/dev/null 2>&1 || {
 		printf 'Missing required command: %s\n' "$command" >&2
 		exit 1
 	}
 done
 
-SOURCE="$PLATFORM_ROOT/apps/merchant-center/src/lib/server/modules/manu/skills"
+SOURCE="$PLATFORM_ROOT/packages/skills"
+CONFIG="$SOURCE/skills.config.json"
+[[ -f "$CONFIG" ]] || { printf 'Missing skills config: %s\n' "$CONFIG" >&2; exit 1; }
+
+mapfile -t SKILLS < <(node -e '
+	const config = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"))
+	for (const [name, flags] of Object.entries(config)) if (flags.public === true) console.log(name)
+' "$CONFIG")
+[[ ${#SKILLS[@]} -gt 0 ]] || { printf 'No skills are flagged public in %s\n' "$CONFIG" >&2; exit 1; }
+
 for skill in "${SKILLS[@]}"; do
-	if [[ ! -f "$SOURCE/$skill/SKILL.md" || -L "$SOURCE/$skill" || -L "$SKILLS_REPO/$skill" ]]; then
+	if [[ ! "$skill" =~ ^[a-z0-9][a-z0-9-]*$ || ! -f "$SOURCE/$skill/SKILL.md" || -L "$SOURCE/$skill" || -L "$SKILLS_REPO/$skill" ]]; then
 		printf 'Expected regular skill folders with SKILL.md: %s\n' "$skill" >&2
 		exit 1
 	fi
+done
+
+# Top-level skill folders here that are no longer published.
+RETIRED=()
+for dir in "$SKILLS_REPO"/*/; do
+	name="$(basename "$dir")"
+	[[ -f "$dir/SKILL.md" ]] || continue
+	[[ " ${SKILLS[*]} " == *" $name "* ]] || RETIRED+=("$name")
 done
 
 if [[ "$COPY_ONLY" == false ]]; then
@@ -60,15 +77,19 @@ fi
 
 for skill in "${SKILLS[@]}"; do
 	mkdir -p "$SKILLS_REPO/$skill"
-	rsync -a --delete "$SOURCE/$skill/" "$SKILLS_REPO/$skill/"
+	# manu.md files are Manu-only instructions and never leave the monorepo.
+	rsync -a --delete --delete-excluded --exclude 'manu.md' "$SOURCE/$skill/" "$SKILLS_REPO/$skill/"
+done
+for skill in "${RETIRED[@]}"; do
+	rm -rf "${SKILLS_REPO:?}/$skill"
 done
 
 if [[ "$COPY_ONLY" == true ]]; then
-	printf 'Copied skills from %s. Review with git diff; no commit or push was made.\n' "$SOURCE"
+	printf 'Copied %s from %s. Review with git status and git diff; no commit or push was made.\n' "${SKILLS[*]}" "$SOURCE"
 	exit 0
 fi
 
-git -C "$SKILLS_REPO" add -- "${SKILLS[@]}"
+git -C "$SKILLS_REPO" add -A -- "${SKILLS[@]}" "${RETIRED[@]}"
 if git -C "$SKILLS_REPO" diff --cached --quiet; then
 	printf 'Published skill files already match the monorepo.\n'
 else

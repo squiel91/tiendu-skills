@@ -1,32 +1,29 @@
 # Tiendu Skills Repository
 
 This repository publishes Tiendu skills for external agents. The canonical
-sources live in the sibling monorepo:
-
-`../platform/apps/merchant-center/src/lib/server/modules/manu/skills/`
+sources live in the sibling monorepo at `../platform/packages/skills/`.
 
 ## Authoring and Manu releases
 
-- Edit skill instructions and references in the monorepo, then run
-  `pnpm generate:manu-skills` from its root and commit the source and generated
-  catalog together. Merchant builds regenerate the catalog locally.
+- Edit skill instructions and references in the monorepo. Its
+  `skills.config.json` flags each skill with `manu`, `public` and `docs`.
+  Run `pnpm generate:manu-skills` there and commit the source and generated
+  catalog together; merchant builds regenerate the catalog locally.
 - Deploy merchant-center to update Manu. Publishing this repository is a
   separate operation and must not gate a Manu release.
-- Manu bundles `tiendu-theme`, `tiendu-merchant-center`, `tiendu-bash`,
-  `tiendu-functions`, and `tiendu-meta-ads`.
-- `tiendu-manager` is public-only: it documents Merchant API v3 for external
-  agents using a store API key. It is maintained in the monorepo but is not
-  loaded by Manu. The obsolete `tiendu-admin-api` is not exported.
+- Published skills: `tiendu-docs`, `tiendu-theme` and `tiendu-meta-ads`.
+  `tiendu-bash` is internal to Manu and is never published. `manu.md` files
+  are Manu-only and are never published.
 
 ## Exporting and publishing
 
 - Publishing logic belongs here in `sync-from-platform.sh`. It reads the
   monorepo and writes only this repository; never sync copies back into the
   monorepo or add cross-repository publishing to merchant builds.
-- Run `./sync-from-platform.sh` from a clean checkout to copy the six public
-  skill folders, commit their changes, and push the current branch to `origin`.
-  The script never force-pushes. If a push fails, its export commit remains
-  local for recovery.
+- Run `./sync-from-platform.sh` from a clean checkout to copy the skills
+  flagged `public`, remove top-level skill folders that are no longer public,
+  commit, and push the current branch to `origin`. The script never
+  force-pushes. If a push fails, its export commit remains local for recovery.
 - `./sync-from-platform.sh --copy-only` exports for review without a commit or
   push. It replaces files and removes stale files inside the managed skill
   folders, so preserve local edits first. Review and commit a copy-only export
