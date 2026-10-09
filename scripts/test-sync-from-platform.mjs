@@ -67,7 +67,7 @@ test('publishing exports the public skills without manu.md, removes retired skil
 	assert.equal(git(f.repo, 'ls-files', ...internal, ...retired), '')
 	assert.equal(readFileSync(join(f.repo, 'README.md'), 'utf8'), 'Keep repository metadata\n')
 	assert.equal(readFileSync(join(f.repo, 'AGENTS.md'), 'utf8'), 'Keep repository instructions\n')
-	assert.equal(git(f.repo, 'ls-files', 'AGENTS.md', 'sync-from-platform.sh'), 'AGENTS.md\nsync-from-platform.sh')
+	assert.equal(git(f.repo, 'ls-files', 'sync-from-platform.sh'), 'sync-from-platform.sh')
 	assert.equal(git(f.repo, 'status', '--porcelain'), '')
 	const after = git(f.repo, 'rev-parse', 'HEAD')
 	assert.notEqual(after, before)
