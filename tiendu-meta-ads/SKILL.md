@@ -1,35 +1,35 @@
 ---
 name: tiendu-meta-ads
 description: >-
-  Usá esta habilidad para ayudar a una tienda Tiendu con Meta Ads: revisar campañas,
-  comprobar Pixel y catálogo, preparar imágenes, crear o editar anuncios y evaluar
-  resultados. Requiere acceso a Tiendu y a la cuenta publicitaria Meta elegida.
+  Run Meta (Facebook and Instagram) ads for a Tiendu store: audit campaigns, check Pixel and product catalog, prepare images, create or edit ads and evaluate results. Works only when the store has connected Meta and selected an ad account; otherwise the Meta tools are absent.
 ---
 
-# Meta Ads para tiendas Tiendu
+# Meta Ads for Tiendu stores
 
-Trabajá sobre la cuenta publicitaria elegida para esta tienda. Antes de recomendar cambios, conocé el objetivo comercial, los productos, el destino del anuncio y el período de análisis. Hablá de resultados y decisiones en lenguaje del vendedor.
+Requires a Tiendu store with Meta connected and one ad account selected (**Ajustes → Manu → Aplicaciones de Manu**). Without a selected account the Meta tools do not exist: tell the seller to connect and select one, and stop. All Meta calls are pinned to that account.
 
-## Método de trabajo
+Before recommending changes, know the business goal, the products, the ad destination and the analysis period. Talk to the seller in terms of results and decisions.
 
-1. Consultá el catálogo actual de herramientas Meta Ads y sus esquemas: el MCP remoto puede cambiar. En Manu, activá nombres exactos con `manu_activate_tools`; en otro agente, usá las herramientas MCP equivalentes que tenga conectadas. No copies nombres de herramientas de guías externas sin verificarlos.
-2. Leé solamente las referencias necesarias para la tarea. En Manu, hacelo con `manu_read_skill_file`:
+## Workflow
 
-| Tarea | Referencia |
-| --- | --- |
-| Comprobar Pixel, dataset, eventos o atribución | `references/medicion.md` |
-| Revisar catálogo, feed o anuncios de productos | `references/catalogo.md` |
-| Auditar una campaña y proponer cambios | `references/auditoria.md` |
-| Crear o editar campaña, conjunto, creatividad o anuncio | `references/anuncios.md` |
+1. The remote Meta tool catalog can change. Read the current tool names and schemas first. In Manu, activate exact names with `manu_activate_tools`; elsewhere use the equivalent connected MCP tools. Do not copy tool names from external guides without checking them.
+2. Read only the reference the task needs (in Manu, with `manu_read_skill_file`):
 
-3. Contrastá lo que devuelve Meta con la configuración y el catálogo de Tiendu cuando la tarea lo requiera. Distinguí datos observados, hipótesis y recomendaciones.
-4. Antes de una escritura, explicá el cambio que intentás hacer. Las herramientas de escritura Meta requieren autorización del vendedor. Después, comprobá el resultado remoto; no deduzcas que un anuncio quedó publicado por haber creado una creatividad.
+| Task | Reference |
+|---|---|
+| Check Pixel, dataset, events or attribution | [measurement](references/measurement.md) |
+| Check the catalog, the product feed or product ads | [catalog](references/catalog.md) |
+| Audit a campaign and propose changes | [audit](references/audit.md) |
+| Create or edit a campaign, ad set, creative or ad | [ads](references/ads.md) |
 
-## Reglas clave
+3. Cross-check what Meta returns against Tiendu's configuration and catalog when the task needs it. Keep observed data, hypotheses and recommendations apart.
+4. Before a write, explain the change. Meta writes need the seller's approval. Afterwards read the result back; a created creative does not mean a published ad.
 
-- Verificá que las respuestas remotas correspondan a la cuenta seleccionada antes de atribuirle resultados o confirmar cambios.
-- Separá campaña (objetivo y presupuesto, según configuración), conjunto (audiencia, ubicación, optimización) y anuncio (creatividad y destino). Leé el estado de cada nivel antes de modificarlo.
-- No prometas ventas ni uses umbrales universales de ROAS, CPA, frecuencia o presupuesto. Evaluá rentabilidad con márgenes, ticket, objetivo y datos de la tienda.
-- Una coincidencia de ID de Pixel no demuestra que los eventos de compra funcionen. Un feed accesible no demuestra que sus productos estén aprobados ni que la coincidencia con eventos sea correcta.
-- El Pixel de la tienda se configura en Tiendu en `--public-config` → `meta.publicKey`; el feed de productos se ofrece en Ajustes → Integraciones → Meta Business. Seguí `references/medicion.md` y `references/catalogo.md` para comprobarlos, sin adivinar valores de otra tienda.
-- Podés generar imágenes con `images_generate` y guardarlas en la galería Tiendu, o importar una imagen pública de Meta con `images_create-from-url` y analizarla con `images_inspect`. Para usarlas en Meta seguí `references/anuncios.md`; inspeccioná imágenes existentes solo cuando verlas cambie la decisión.
+## Rules
+
+- Confirm remote responses belong to the selected account before attributing results or confirming changes.
+- Keep campaign (objective, budget depending on setup), ad set (audience, placement, optimization) and ad (creative, destination) separate, and read each level's state before changing it.
+- Promise no sales and use no universal ROAS, CPA, frequency or budget thresholds. Judge profitability with margins, ticket size, goal and store data.
+- A matching Pixel ID does not prove purchase events work. An accessible feed does not prove its products are approved or match events.
+- The Pixel ID is stored in Tiendu as store metadata `--public-config` → `meta.publicKey`, and the product feed URL is shown in **Ajustes → Negocio → Marketing → Meta Business**. Never guess another store's values.
+- Images: `images_generate` saves to the gallery; `images_create-from-url` imports a public Meta image so `images_inspect` can look at it. Inspect only when seeing the image changes the decision.
