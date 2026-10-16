@@ -14,7 +14,9 @@ Read this before creating or changing a Function's code.
 
 Web APIs of workerd: `Request`, `Response`, `Headers`, `URL`, `URLSearchParams`, `fetch`, `crypto`, `TextEncoder`, `TextDecoder`, streams, `FormData`, `Blob`, `atob`, `btoa`, `console`.
 
-`env` holds only the secrets configured for that Function, as strings. There is no KV, D1, R2, Durable Objects, filesystem, database or server variables.
+`env` holds only the secrets configured for that Function, as strings. There is no KV, D1, R2, Durable Objects, filesystem or server variables. The global `tools` exposes granted Tiendu procedures, including the store database, through a server binding.
+
+Call `await tools.sqlite_query({sql, params})` or `await tools.sqlite_execute({statements})` inside the handler. Other granted tools use the same `tools.<name>(input)` interface. The server fixes the Function identity and store; callers cannot select them. Owners grant permissions in the Function panel; missing grants throw `ToolNotGrantedError` and appear in logs. See [Store database](../store-database/overview.md). Each tool call counts toward the 20 subrequests.
 
 ## Request and response
 

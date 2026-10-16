@@ -4,8 +4,8 @@ Settings live under **Ajustes** (`/admin/tiendas/{storeHandle}/ajustes`) in thre
 
 | Group | Tabs | Covers |
 |---|---|---|
-| **Negocio** | General, Cobros, Logística, Marketing | Store data, notifications, team, payments, delivery, marketing integrations. |
-| **Tienda** | Tema, Personalización, Dominios, Desarrollo y API | Theme and previews, checkout/email look, domains, developer tools. |
+| **Negocio** | General, Cobros, Logística, Marketing | Store data, notifications, team, payments, delivery, marketing integrations, dangerous actions. |
+| **Tienda** | General, Tema, Personalización, Dominios, Desarrollo y API | Order confirmation, URL rules, listing visibility, theme and previews, checkout/email look, domains, developer tools. |
 | **Manu** | (one page) | AI credits, WhatsApp, assistant rules, Meta Ads and Google Analytics connections. |
 
 Outside Ajustes: **Suscripción** (`/suscripcion`) and **Soporte** (`/soporte`).
@@ -14,11 +14,14 @@ Outside Ajustes: **Suscripción** (`/suscripcion`) and **Soporte** (`/soporte`).
 
 - **Nombre de tu tienda**, **Número de WhatsApp** and **Email principal**: contact data shoppers can use.
 - **Notificaciones por email**: choose which events email the seller (new order, new review, verified subscriber, upcoming special date).
+- **Equipo y permisos**: collaborators (see the team guide).
+- **Riesgoso → Borrar negocio** is permanent and only for owners.
+
+## General (Tienda)
+
 - **Confirmación automática de pedidos**: paid orders are confirmed automatically (see the orders guide).
 - **Redirecciones y Reescrituras**: URL rules (see the URL rules guide).
-- **Equipo y permisos**: collaborators (see the team guide).
-- **Visibilidad**: a store that is not listed (`isListed: false`) cannot be reached by visitors or customers. Listing it again makes it public.
-- **Borrar tienda** is permanent and only for owners.
+- **Visibilidad**: **Deslistar tienda** hides a store that is listed, so visitors and customers cannot reach it (`isListed: false`). **Listar tienda** makes it public again.
 
 `store_get` and `store_update` read and change these settings. Changing the `hostname` or a public URL path (`productPath`, `categoryPath`, `pagePath`, `blogPostPath`) changes public URLs; add URL rules for the old paths when needed.
 
@@ -28,7 +31,7 @@ Outside Ajustes: **Suscripción** (`/suscripcion`) and **Soporte** (`/soporte`).
 
 ## Domains
 
-**Tienda → Dominios** lists the hostnames of the store. A domain can be enabled or disabled, made the primary domain, or removed. A domain with a redirect target answers every request with a 301 to that URL, keeping path and query.
+**Tienda → Dominios** is where the merchant buys a `.uy` domain, connects one they already own, and manages email, DNS, the primary hostname and redirects. The full rules and the screen-by-screen guide are in [Domains](../domains/overview.md).
 
 ## Theme
 

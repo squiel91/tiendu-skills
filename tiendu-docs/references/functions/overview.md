@@ -4,7 +4,7 @@ A **Function** (*función*) is store-owned server-side JavaScript exposed as an 
 
 Use a Function when the result must be a reusable HTTP endpoint, receive calls from an external system, or coordinate an integration no normal Tiendu operation covers.
 
-Manu: the Function tools (`functions_*`) are not active after loading this skill. Activate the ones needed by exact name with `manu_activate_tools`.
+Manu: read the schemas of the Function tools (`functions_*`) you need with `tool_inspect`, then call them with `tool_call`.
 
 ## Basics
 
@@ -48,3 +48,12 @@ To serve a Function at a friendly path such as `/calculadora`, create a URL rule
 `functions_invocations_list`, then `functions_invocations_get` for the full request and response, then `functions_logs_list` to match `console.*` output and exceptions to an invocation. Data is kept seven days. Filter logs by level or text before widening a search.
 
 Where: **Ajustes → Tienda → Desarrollo y API → Funciones** (**Nueva función**, search by name or slug).
+
+
+## Tiendu tools and store database
+
+Functions receive `tools.*`, with the same names, input and output as Node scripts in the environment. They execute with the Function's store identity, without Tiendu API-key secrets. Request tool names with `requestedTools` on `functions_create` / `functions_update`; requesting grants no access. Only the merchant owner or an administrator grants or revokes permissions in the chat or Function settings. Code changes preserve grants. Tools requiring a human identity and Function-management/secret tools cannot be granted.
+
+A missing permission throws `ToolNotGrantedError` (`code: 'tool-not-granted'`) and is recorded in Function logs. In a task, mention the requesting merchant with the link to the Function permissions page instead of waiting for a chat approval. Never claim Manu can grant these permissions.
+
+For persistent comments, forms and caches, use `tools.sqlite_query({sql,params})`, `tools.sqlite_schema()` and atomic `tools.sqlite_execute({statements})`. Read [Store database](../store-database/overview.md) for the SQL contract and [blog comments](../store-database/examples.md) for a complete Function. Validate visitor input, use SQL parameters and never expose arbitrary SQL through a public Function.

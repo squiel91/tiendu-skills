@@ -8,7 +8,7 @@
 |---|---|
 | **Créditos de IA** | Remaining monthly balance. One credit is one US cent. |
 | **Aplicaciones de Manu** | **WhatsApp** (see below), **Meta Ads** and **Google Analytics** connections. |
-| **Reglas del asistente** | Up to 6 rules per store, 2024 characters each. They apply to the panel chat and WhatsApp. |
+| **Memoria** | Up to 32 personal memories per merchant per store, 1024 characters each. The whole team can see them. Merchant entries start locked; Manu can edit only the current merchant’s unlocked entries. Authors and store owners can change locks; owners can edit or delete anyone’s memories. Existing store-wide rules remain shared and locked. |
 | **Permisos permanentes de Manu** | Actions the seller allowed Manu to repeat without asking. |
 | **Instrucciones para imágenes** | Default instructions for generated images. |
 

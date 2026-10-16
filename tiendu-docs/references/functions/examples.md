@@ -6,12 +6,9 @@ Starting points to adapt, not store data. Mutating examples check `request.metho
 
 Use this when an ERP, PIM or form needs a reusable endpoint. If the seller only wants one product created, do not create a Function: use `images_create-from-url` and `products_create`.
 
-A product does not accept an external image URL, so there are two steps: `POST /images/from-url` returns an `image.id`, then the Function creates the product with that id in `imageIds`.
+A product does not accept an external image URL, so there are two steps: `tools['images_create-from-url']` returns an `image.id`, then `tools.products_create` creates the product with that id in `imageIds`.
 
-Secrets:
-
-- `TIENDU_API_KEY`: a store API key.
-- `TIENDU_STORE_HANDLE`: the store handle (for example `my-store`).
+Request `requestedTools: ['images_create-from-url', 'products_create']` when creating or updating the Function. The merchant owner or a platform administrator must grant both permissions. The Function needs no Tiendu API-key or store-handle secrets; its store identity is fixed by the server.
 
 Make the Function private. It expects a JSON `POST`:
 
@@ -29,33 +26,7 @@ Make the Function private. It expects a JSON `POST`:
 Code:
 
 ```js
-const TIENDU_ORIGIN = 'https://tiendu.uy'
-
 class InputError extends Error {}
-
-async function tienduRequest(env, path, init = {}) {
-	const headers = new Headers(init.headers)
-	headers.set('Authorization', `Bearer ${env.TIENDU_API_KEY}`)
-	if (init.body) headers.set('Content-Type', 'application/json')
-
-	const response = await fetch(
-		`${TIENDU_ORIGIN}/api/v3/stores/${env.TIENDU_STORE_HANDLE}${path}`,
-		{ ...init, headers }
-	)
-	const text = await response.text()
-	let body = null
-	try {
-		body = text ? JSON.parse(text) : null
-	} catch {
-		body = text
-	}
-
-	if (!response.ok) {
-		console.error('Tiendu Admin API error', response.status, body)
-		throw new Error(`Tiendu Admin API returned ${response.status}`)
-	}
-	return body
-}
 
 function requiredString(value, field) {
 	if (typeof value !== 'string' || !value.trim()) {
@@ -70,13 +41,6 @@ export default {
 			return Response.json(
 				{ error: 'Method not allowed' },
 				{ status: 405, headers: { Allow: 'POST' } }
-			)
-		}
-		if (!env.TIENDU_API_KEY || !env.TIENDU_STORE_HANDLE) {
-			console.error('Missing Tiendu API configuration')
-			return Response.json(
-				{ error: 'Function not configured' },
-				{ status: 500 }
 			)
 		}
 
@@ -97,42 +61,26 @@ export default {
 				throw new InputError('currency must be UYU or USD')
 			}
 
-			image = await tienduRequest(env, '/images/from-url', {
-				method: 'POST',
-				body: JSON.stringify({
-					sourceUrl: imageUrl.href,
-					alt: title,
-					fileName: null
-				})
+			image = await tools['images_create-from-url']({
+				sourceUrl: imageUrl.href,
+				alt: title,
+				fileName: null
 			})
-
-			try {
-				const product = await tienduRequest(env, '/products', {
-					method: 'POST',
-					body: JSON.stringify({
-						title,
-						handle,
-						currency,
-						basePriceInCents: input.priceInCents,
-						imageIds: [image.id],
-						description:
-							typeof input.description === 'string' ? input.description : null,
-						isListed: false
-					})
-				})
-
-				return Response.json(
-					{ ok: true, productId: product.id, imageId: image.id },
-					{ status: 201 }
-				)
-			} catch (error) {
-				ctx.waitUntil(
-					tienduRequest(env, `/images/${image.id}`, { method: 'DELETE' }).catch(
-						cleanupError => console.error('Image cleanup failed', cleanupError)
-					)
-				)
-				throw error
-			}
+			const product = await tools.products_create({
+				input: {
+					title,
+					handle,
+					currency,
+					basePriceInCents: input.priceInCents,
+					imageIds: [image.id],
+					description: typeof input.description === 'string' ? input.description : null,
+					isListed: false
+				}
+			})
+			return Response.json(
+				{ ok: true, productId: product.id, imageId: image.id },
+				{ status: 201 }
+			)
 		} catch (error) {
 			if (error instanceof InputError || error instanceof SyntaxError) {
 				return Response.json({ error: error.message }, { status: 400 })
@@ -144,6 +92,6 @@ export default {
 }
 ```
 
-The product is created with `isListed: false`, so it stays a draft for the seller to review. If creation fails after the image import, the Function tries to delete that image in the background.
+The product is created with `isListed: false`, so it stays a draft for the seller to review. The two tool calls are separate operations: if product creation fails, inspect the product and imported image before retrying or removing anything. A timeout can leave an unknown outcome.
 
-Never log or hard-code the API key. The bearer that invokes a private Function is consumed by the gateway and removed before the worker; calls to the Tiendu API must use the `TIENDU_API_KEY` secret.
+The bearer that invokes a private Function is consumed by the gateway and removed before the worker. It is separate from the merchant-granted tool permissions.

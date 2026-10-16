@@ -7,7 +7,7 @@ Agent skills for the [Tiendu](https://tiendu.uy) e-commerce platform.
 | Skill | Description |
 |-------|-------------|
 | [tiendu-docs](./tiendu-docs) | How a Tiendu store works and where to find things in the Merchant Center, including Functions |
-| [tiendu-theme](./tiendu-theme) | Change the code of a Tiendu storefront theme with Liquid and the Git workflow |
+| [tiendu-theme](./tiendu-theme) | Change the code of a Tiendu storefront theme: routes, GraphQL data files, snippets and the Git workflow |
 | [tiendu-meta-ads](./tiendu-meta-ads) | Run Meta (Facebook and Instagram) ads for a Tiendu store |
 
 ## Install

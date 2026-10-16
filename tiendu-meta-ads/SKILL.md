@@ -1,7 +1,7 @@
 ---
 name: tiendu-meta-ads
 description: >-
-  Run Meta (Facebook and Instagram) ads for a Tiendu store: audit campaigns, check Pixel and product catalog, prepare images, create or edit ads and evaluate results. Works only when the store has connected Meta and selected an ad account; otherwise the Meta tools are absent.
+  Run Meta (Facebook and Instagram) ads for a Tiendu store: audit campaigns, check Pixel and catalog, create or edit ads and read results. Works only when the store has connected Meta and selected an ad account.
 ---
 
 # Meta Ads for Tiendu stores
@@ -12,8 +12,8 @@ Before recommending changes, know the business goal, the products, the ad destin
 
 ## Workflow
 
-1. The remote Meta tool catalog can change. Read the current tool names and schemas first. In Manu, activate exact names with `manu_activate_tools`; elsewhere use the equivalent connected MCP tools. Do not copy tool names from external guides without checking them.
-2. Read only the reference the task needs (in Manu, with `manu_read_skill_file`):
+1. The remote Meta tool catalog can change. Read the current tool names and schemas first. In Manu, read their schemas with `tool_inspect` and call them with `tool_call`; elsewhere use the equivalent connected MCP tools. Do not copy tool names from external guides without checking them.
+2. Read only the reference the task needs:
 
 | Task | Reference |
 |---|---|

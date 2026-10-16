@@ -1,5 +1,8 @@
 # Metadata
 
+> [!WARNING]
+> Metadata is deprecated. Use the store [SQLite database](../store-database/overview.md) for new data.
+
 **Metadata** (*metadatos*, *campos personalizados*) is JSON that does not fit the standard fields. It comes in two forms.
 
 ## Store metadata

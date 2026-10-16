@@ -25,4 +25,4 @@ Menu **Ventas → Pedidos** (`/admin/tiendas/{storeHandle}/pedidos`). Each order
 
 ## Auto-confirmation
 
-**Ajustes → Negocio → General**: **Confirmación automática de pedidos** (**Activar confirmación automática**) confirms paid orders automatically.
+**Ajustes → Tienda → General**: **Confirmación automática de pedidos** (**Activar confirmación automática**) confirms paid orders automatically.

@@ -1,7 +1,7 @@
 ---
 name: tiendu-docs
 description: >-
-  How a Tiendu store works and where to find things in the Merchant Center. Load it before answering or acting on products (attributes, variants, stock, images), collections, pages and blog posts, orders and shipping, coupons, metadata, URL redirects and rewrites, customers, reviews, tasks, analytics and store settings. Also covers Functions (server-side endpoints), a last resort when no tool does the job. Not for theme code (use tiendu-theme) or Meta ads (use tiendu-meta-ads).
+  How a Tiendu store works and where things are in the Merchant Center: catalog, orders, shipping, coupons, customers, tasks, settings and Functions. Use it when a concept needs a deeper understanding or to explain how to do something in the panel. Not for theme code or Meta ads.
 ---
 
 # Tiendu
@@ -25,10 +25,12 @@ Each concept folder has an `overview.md` (what it is, rules and edge cases, tool
 | Customers and reviews | [customers-and-reviews](references/customers-and-reviews/overview.md) |
 | Abandoned carts, campaigns, subscribers | [marketing](references/marketing/overview.md) |
 | Redirects and rewrites | [url-rules](references/url-rules/overview.md) |
+| Domains: buy a `.uy` name, connect one the merchant owns, email and DNS | [domains](references/domains/overview.md) |
 | Custom fields (metadata) | [metadata](references/metadata/overview.md) |
 | Task board | [tasks](references/tasks/overview.md) |
 | Analytics | [analytics](references/analytics/overview.md) |
 | Settings, team, domains, plan, AI, support | [store-settings](references/store-settings/overview.md) |
+| Store database (SQLite tables for data the catalog does not model) | [store-database](references/store-database/overview.md) |
 | Functions (server-side endpoints) | [functions](references/functions/overview.md) |
 
 Theme code is in `tiendu-theme`; Meta ads in `tiendu-meta-ads`.
