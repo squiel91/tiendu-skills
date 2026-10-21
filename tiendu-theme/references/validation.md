@@ -23,7 +23,6 @@ Push messages read `[CODE] file:line: message`. On `live` any error rejects the 
 | `V1` | error | Engine 1 constructs (sections, schemas, `settings`, `content_for_layout`, JSON templates) do not exist. Use routes, data files and snippets. |
 | `ASSET` | error | Add the file to `assets/` or fix the name. |
 | `DATA` | error | Fix the data file: query only schema fields, keep `first` at most 100, `@required` only on top-level fields. |
-| `DATA_KEY` | error | Two data files in one route chain use the same top-level key: rename one with an alias. |
 | `DATA_VARIABLE` | error | Give the variable a default or a route param of the same name, and declare it the same way in every file of the chain. |
 | `RESOURCE_ROUTE` | error | Create the route folder ending in `[handle]` that the `routes.json` pattern points to, or fix the pattern. |
 | `UNKNOWN_DATA` | warning | The view reads a `data` key no data file in its chain loads. Load it or fix the name. |

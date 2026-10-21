@@ -26,7 +26,7 @@ Public entries are read in a theme with `{% metadata key: "site-announcement" as
 
 Extra JSON stored on each product in `product.metadata` (brand, origin, care). It is separate from **Características** (`specifications`).
 
-The Merchant Center shows the **Editar metadatos** button on products only when the store has an entry with the exact key `--detailed-product-metadata` and a valid `jsonSchema`. That entry defines the form; the values live on each product. Keep that entry private (`isPublic: false`). Themes read `product.metadata` directly; the `{% metadata %}` tag does not read it.
+The Merchant Center shows the **Editar metadatos** button on products only when the store has an entry with the exact key `--detailed-product-metadata` and a valid `jsonSchema`. That entry defines the form; the values live on each product. Keep that entry private (`isPublic: false`). Engine 1 themes read `product.metadata` directly; the `{% metadata %}` tag does not read it. Tiendu themes and headless sites select `metadata` on `Product` in the Store API. Picker values come back as references, not as images, products or collections.
 
 To turn the product editor on: create the `--detailed-product-metadata` entry (with a REST call or in the panel; the tools cannot create entries), set its `jsonSchema` as a **string** with an object root, and write values with `products_create` or `products_update` (`input.metadata`).
 

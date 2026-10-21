@@ -16,7 +16,7 @@ query CollectionPage($handle: String!, $page: Int = 1) {
 }
 ```
 
-Variables come from a matching route parameter, then the URL query, then the declared default. A required variable without a default must be a route parameter. The same variable must have the same type and default throughout a layout/page chain. Top-level response keys cannot repeat across that chain; use aliases.
+Variables come from a matching route parameter, then the URL query, then the declared default. A required variable without a default must be a route parameter. The same variable must have the same type and default throughout a layout/page chain. Top-level response keys can repeat across that chain: in `data` the nearest file wins (the view's own, then its closest layout), and in a layout's `children.data` the immediate child wins. Use aliases to keep results distinct.
 
 `@required` on a top-level data-file field renders the 404 page only if the result is null. It does not mean a list must contain an item. Do not use it on nested fields or in named queries. Over HTTP it has no 404 behavior; inspect the nullable result yourself.
 

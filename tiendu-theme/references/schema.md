@@ -207,6 +207,10 @@ type Product {
   """Listed variants only; there is no pagination argument."""
   variants: [Variant!]!
   specifications: [Specification!]!
+  """
+  Merchant-defined product metadata as stored, or null. Image, product and collection picker values are references such as {"__type__": "image", "id": 123} and are not resolved.
+  """
+  metadata: JSON
   collections(
     """
     Records per page or list, clamped to 0–100. A connection with zero records per page has zero total pages.
@@ -367,6 +371,9 @@ scalar ProductSort
 One of newest, oldest, rating-desc or rating-asc. Pass a string, not a GraphQL enum value.
 """
 scalar ReviewSort
+
+"""Any JSON value. Output only."""
+scalar JSON
 
 """An available product sort with its display label."""
 type SortOption {
