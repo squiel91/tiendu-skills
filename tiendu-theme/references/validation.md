@@ -30,7 +30,7 @@ Push messages read `[CODE] file:line: message`. On `live` any error rejects the 
 | `TITLE` | warning | Set the title with `{% metadata title: … %}` instead of a `<title>` tag. |
 | `RESOURCE_PATH` | warning | Print the resource `url` field instead of a hardcoded path. |
 | `SDK_MISSING` | warning | Add `assets/tiendu-sdk.js` and load it from `routes/+layout.liquid`. |
-| `SDK_OUTDATED` | warning | Replace `assets/tiendu-sdk.js` with the latest release. |
+| `SDK_OUTDATED` | warning | Same major: replace with the latest release from https://docs.tiendu.uy/themes/sdk. |
 | `SDK_MODIFIED` | warning | The SDK file differs from every release. Prefer the released file; merge updates by hand if you keep changes. |
 | `RENDER` | error | The route failed while rendering with real data. Fix the file and line in the message and check it in a preview. |
 | `COVERAGE` | warning | The route could not be rendered with sample data (no records, or the time budget ran out). Check it in a preview. |

@@ -17,7 +17,7 @@ Each folder under `routes/` with a `+page.liquid` is a page; its path is the URL
 
 ## Layouts
 
-`+layout.liquid` wraps every page below its folder and prints `{{ content }}` exactly once. Layouts nest from `routes/` inward. The root `routes/+layout.liquid` holds `<html>` and prints `{{ tiendu_head }}` in `<head>` and `{{ tiendu_body_end }}` before `</body>`, once each and only there. A layout can have its own `+layout.graphql`.
+`+layout.liquid` wraps every page below its folder and prints `{{ content }}` exactly once. Layouts nest from `routes/` inward. The root `routes/+layout.liquid` holds `<html>` and prints `{{ tiendu_head }}` in `<head>` and `{{ tiendu_body_end }}` before `</body>`, once each and only there. `tiendu_head` prints the title, description, canonical, robots, Open Graph/Twitter and SDK meta tags, `{% head %}` content and analytics; write `<meta charset="utf-8">` and the viewport tag yourself. A layout can have its own `+layout.graphql`.
 
 ## Partials
 
@@ -25,14 +25,14 @@ Put route-specific partials in that route's `_snippets/` folder and reusable com
 
 ## Data files
 
-`+page.graphql` and `+layout.graphql` are GraphQL queries against the [schema](schema.md). Their result is `data`, merged from the outermost layout to the page.
+`+page.graphql` and `+layout.graphql` are GraphQL queries against the [Store API](https://docs.tiendu.uy/api-references/store-api/overview). Their result is `data`, merged from the outermost layout to the page. See [Data files](data-files.md) for schema discovery, anonymous execution and pagination.
 
 ```graphql
 query ($handle: String!, $page: Int = 1, $sort: ProductSort) {
   collection(handle: $handle) @required {
     name url description
     products(first: 24, page: $page, sortBy: $sort) {
-      nodes { id title url price currency coverImage { url alt } }
+      nodes { id title url priceMinInCents currency coverImage { url alt } }
       pageInfo { currentPage totalPages }
     }
   }
@@ -49,14 +49,16 @@ query ($handle: String!, $page: Int = 1, $sort: ProductSort) {
 
 | Tag | Use |
 |---|---|
-| `{% metadata title: …, description: …, image: …, robots: 'noindex' %}` | Page title, description, share image, robots. The innermost view wins. Never write `<title>`. |
-| `{% head %}…{% endhead %}` | Extra tags for `<head>` (styles, JSON-LD). |
+| `{% metadata title: …, description: …, image: …, robots: 'noindex' %}` | Page title, description, share image, robots. Each argument comes from the innermost view that sets it, so a page setting only `title` keeps the layout's description and image. The title prints as given, without the store name. Never write `<title>`. |
+| `{% head %}…{% endhead %}` | Extra tags for `<head>` (styles, JSON-LD). Works in partials too. Printed by `{{ tiendu_head }}`, so put an import map before that tag. |
 | `{% redirect '/nueva', status: 301 %}` | Redirect to a path on this store. |
 | `{% not_found %}` | Render the 404 page. |
 | `{% render 'lib/product-card', product: p %}` | Snippet with explicit arguments. |
 | `{% tool 'sqlite_query', sql: sql, params.post_id: post.id, as: 'result' %}` | Read the store SQLite database (custom features only); rows are in `result.results[0].rows`, `result.error` on failure. `{% tool 'sqlite_schema', as: 'schema' %}` lists tables. Not in snippets. |
 
-Filters: `money`, `money_with_currency`, `money_without_currency`, `money_without_trailing_zeros` (cents in, formatted out), `image_url: width: 800`, `asset_url`, `stylesheet_tag`, `script_tag`, plus standard Liquid filters.
+Filters: `money`, `money_with_currency`, `money_without_currency`, `money_without_trailing_zeros` (cents in, formatted out; each takes an optional currency code, else `store.currency`; UYU has no decimals: `89000 | money` → `$ 890`), `number` (`4.66 | number: 1` → `4,7`; never `replace: '.', ','`), `date` (Spanish names in Uruguay time: `'%e de %B de %Y'` → `15 de octubre de 2025`; `YYYY-MM-DD` is that calendar day), `image_url: width: 800` (image object or URL string; only Tiendu images, `imagedelivery.net` URLs ending in `/sm`, `/md` or `/lg`, are resized, including literal strings), `asset_url`, `stylesheet_tag`, `script_tag`, plus standard Liquid filters.
+
+Liquid is LiquidJS 10.30 with strict filters (an unknown filter is an error) and own properties only. There is no `include` or `layout` tag. A multi-line `{%- # -%}` comment needs `#` on every line, and a `%}` inside it ends the comment: the rest prints on the page. `{% query %}` and `{% tool %}` names are quoted literals; they work inside `{% liquid %}`, `{% if %}` and `{% for %}`. Globals: `data`, `params`, `request` (`path`, declared `query`, `route` as the folder path such as `routes` or `routes/productos/[handle]` and empty on the 404 page, `preview_mode`), `store` (`name`, `description`, `url`, `countryCode`, `currency`, `whatsappNumber`, `emailAddress`; query `store { personalization { … } }` in a layout data file for overlay colors and font; logo, favicon and social links live in the theme's files). Query parameters a data file doesn't declare (and use) never reach `request.query`: read page-only flags such as `?debug` in browser JavaScript. Full list: [Cheatsheet](https://docs.tiendu.uy/themes/cheatsheet).
 
 ## URLs: `config/routes.json`
 
@@ -66,7 +68,7 @@ Filters: `money`, `money_with_currency`, `money_without_currency`, `money_withou
 
 - Each pattern must point to a route folder ending in `[handle]`. The platform builds every store URL from it: `url` fields, "Ver en la tienda", cart, emails, sitemap, Meta catalog.
 - A missing key is allowed: that resource has no public URL, `url` is null and the admin explains it. Do not link it.
-- All products is the collection with handle `todas`, served by the collection route.
+- All products is always the virtual collection with handle `todas`, served by the collection route (`/categorias/todas`). Never add a separate all-products route such as `/productos`.
 - Changing a pattern breaks old links. Add a 301 URL rule in the admin from the old prefix to the new one (`/productos` → `/p`), and point earlier rules at the newest pattern instead of chaining them.
 
 ## Templates for a group of records

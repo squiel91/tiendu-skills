@@ -6,7 +6,7 @@
 |---|---|
 | **Agente IA** | Links to the guide for connecting an external AI agent (MCP, skills, CLI). |
 | **Claves de API** | Creates API keys for the REST API. |
-| **Modo desarrollador** | Includes render errors and warnings as HTML comments at the start of the published storefront. Previews always have this mode on. |
+| **Modo desarrollador** | Includes render errors and warnings as HTML comments at the start of the published storefront, and allows browser calls to the Store API and overlay embedding from `http://localhost` and `http://127.0.0.1` on any port. Previews always include rendering diagnostics, even when this setting is off. |
 | **Funciones** | Server-side JavaScript endpoints (see the Functions guide). |
 | **Webhooks** | Notifies another application of product, collection and order changes. **Habilitar webhooks**, a **URL del webhook (HTTPS)**, **Eventos suscritos** and a signing secret shown only when created or rotated. **Enviar prueba** and **Entregas recientes** (event, status, attempts, HTTP code) help debugging. |
 | **Entorno de Manu** | Opens the store's full environment in the browser: the same files, VS Code and terminal that Manu uses. |

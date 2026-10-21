@@ -15,10 +15,9 @@ Columns are fixed. A task has a title, a description (plain text), an optional a
 
 ## Automatic tasks
 
-Some tasks mirror something else and update themselves (`source` is set):
+Some tasks mirror an order and update themselves (`source` is set): one card per order that needs the seller (confirm, mark paid, send, deliver), moved by the order's status.
 
-- **Getting-started steps**: one card per unfinished activation step, in Para hacer.
-- **Orders**: one card per order that needs the seller (confirm, mark paid, send, deliver), moved by the order's status.
+A new store also starts with a few getting-started tasks (label PRIMEROS PASOS) in Para hacer. They are ordinary tasks.
 
 Their title, description, labels and attachments cannot change, and their column cannot be changed by hand (`statusLocked`); only reordering inside the column, assignee, due date, checklist, comments, archive and delete work.
 

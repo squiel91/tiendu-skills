@@ -35,4 +35,4 @@ Outside Ajustes: **Suscripción** (`/suscripcion`) and **Soporte** (`/soporte`).
 
 ## Theme
 
-**Tienda → Tema** lists the theme previews. Git branches create previews; publishing is a push to `live`, and deleting a preview deletes its branch. **Personalizar** opens the visual customizer on a preview. See the theme skill for code.
+**Tienda → Tema** lists the theme previews. Git branches create previews; publishing is a push to `live`, and deleting a preview deletes its branch. See the theme skill for code.

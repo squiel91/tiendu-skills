@@ -13,4 +13,4 @@
 
 The page previews the checkout and the order email. Emails follow the same colors and rounding, are sent as `{Store name} <{storeHandle}@tiendu.uy>` and carry no Tiendu branding.
 
-The theme's own colors and fonts are changed in the customizer or in theme code, not here.
+The theme's own colors and fonts are changed in theme code, not here.

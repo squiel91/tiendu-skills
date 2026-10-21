@@ -14,8 +14,8 @@ Theme code changes only through Git. `live` is the published theme; every other 
 
 Every push is validated before anything changes.
 
-- **Static checks** on every branch: config, route folders, Liquid, data files against the schema, snippet and asset references, URL patterns. On `live` any error rejects the push; on a preview branch errors and warnings come back as `warning:` lines and the preview is still created.
-- **Render check** on `live` only: each route is rendered with real store data (one sample record per resource type). A template that fails at render time rejects the push. Missing sample data gives coverage warnings, not errors.
+- **Static checks** on every branch: config, route folders, Liquid, data files against the schema, snippet and asset references, URL patterns. On `live` any error rejects the push; on a preview branch errors and warnings come back as `warning:` lines and the preview is still created. Every checked push ends with `checks: <branch>: 0 errors, N warnings`; no such line means the checks did not run. Preview pages always start with a developer-mode HTML comment that lists render warnings and errors, or says `No rendering warnings or errors.`
+- **Render check**: each route is rendered with real store data (one sample record per resource type). On `live` a template that fails at render time rejects the push. On a preview branch it runs when the static checks found no errors, and a render failure is the first `warning:` line. Missing sample data gives coverage warnings, not errors.
 - Each message names the code, file and line. Fixes are in [validation](validation.md).
 - Limits: 10,000 files, 100 MiB in total, 5 MiB per text file, 25 MiB per other asset. No symlinks or submodules.
 
@@ -23,9 +23,10 @@ Every push is validated before anything changes.
 
 - Same engine, data and assets as live. Not indexed; tracking is off.
 - Cart and checkout work: an order placed in a preview is a real order.
-- Render errors appear as an HTML comment at the top of the page.
+- Render errors appear in an HTML comment inside `<head>`, where `{{ tiendu_head }}` prints, starting with `Tiendu developer mode: enabled.`
 - Store SQLite data is shared with live: a write from a preview is live at once.
 - Preview branches accept force pushes; deleting the branch deletes the preview.
+- A preview branch may have history unrelated to `live` (a theme started elsewhere). Publish it once with `git switch -c publish origin/live && git merge --allow-unrelated-histories --no-commit -s ours <branch> && git read-tree -u --reset <branch> && git commit -m "Publish" && git push origin publish:live`; the result has exactly the branch's files and fast-forwards `live`.
 
 ## Steps
 
@@ -46,7 +47,7 @@ git push origin --delete cambio-header  # removes the preview
 
 ## SDK updates
 
-`assets/tiendu-sdk.js` is a released file. A warning that it is deprecated means a newer release exists: download it from `https://docs.tiendu.uy/sdk/tiendu-sdk.js` and replace the file. A warning that it was modified means the file differs from every release; keep local edits only if you must, and merge new releases by hand.
+`assets/tiendu-sdk.js` is a released file. For a same-major deprecated release, download `https://docs.tiendu.uy/sdk/tiendu-sdk.js` and replace the file. Across major versions the API changes: read `https://docs.tiendu.uy/themes/sdk` before replacing it. A warning that it was modified means the file differs from every release; keep local edits only if you must, and merge new releases by hand.
 
 ## For Manu
 

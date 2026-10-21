@@ -15,6 +15,7 @@ Example: a jacket offered in sizes XS and S and colors Red and Pink needs four a
 3. Link the values the product offers (`products_set-attribute-values`, or `products_add-attribute-value`).
 4. Create one variant per sellable combination (`product-variants_create` with `attributeValueIds`).
 5. Set each variant's price, stock, SKU and weight (`product-variants_update`).
+6. Delete the default variant from step 1 (`product-variants_delete`). It has no attributes and can't get them, and until it is deleted shoppers can buy it without choosing options.
 
 ## Attributes
 
