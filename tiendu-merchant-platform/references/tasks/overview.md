@@ -49,7 +49,7 @@ Labels are store-wide and unique by name. Colors are a hue (green, yellow, orang
 | Checklist | `tasks_checklist_add`, `_update`, `_delete` |
 | Comments | `tasks_comments_list`, `_create`, `_react`, `_delete` |
 
-Tasks are not part of the REST v3 API. 
+Tasks are not part of the REST v3 API.
 
 ## In the Merchant Center
 

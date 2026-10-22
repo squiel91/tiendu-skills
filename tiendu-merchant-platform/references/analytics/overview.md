@@ -24,7 +24,7 @@ Definitions: a **visit** is a window of session activity ended by 30 minutes of 
 
 Storefront visits are tracked by the store itself. Optional Meta and Google Analytics tracking is configured in the integrations settings and injected only on the live storefront.
 
-Analytics tools are not part of the REST v3 API. 
+Analytics tools are not part of the REST v3 API.
 
 ## In the Merchant Center
 

@@ -46,7 +46,7 @@ When a product, collection, page or post changes its handle, `createRedirectFrom
 |---|---|---|
 | List, create, update, delete | `url-rules_list`, `url-rules_create`, `url-rules_update`, `url-rules_delete` | `/url-rules`, `/url-rules/{urlRuleId}` |
 
-Use these tools; do not create a Function or edit theme code for something a rule can do. 
+Use these tools; do not create a Function or edit theme code for something a rule can do.
 
 Functions use their own Storefront-origin URL, `https://stores.tiendu.uy/{storeHandle}/functions/{slug}`. URL rules do not proxy those endpoints.
 
