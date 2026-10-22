@@ -1,6 +1,6 @@
 # Minimal headless site
 
-The Storefront API is **unreleased**. Use an enabled store, confirm its handle, and turn on developer mode for localhost. Fetch `https://stores.tiendu.uy/{storeHandle}/api/graphql/schema` first. Save `https://docs.tiendu.uy/sdk/tiendu-sdk-2.1.0.js` as `tiendu-sdk.js` beside this `index.html`; replace `YOUR_STORE_HANDLE`.
+Use a public store, confirm its handle, and turn on developer mode for localhost. Fetch `https://stores.tiendu.uy/{storeHandle}/api/graphql/schema` first. Save `https://docs.tiendu.uy/sdk/tiendu-sdk-2.1.0.js` as `tiendu-sdk.js` beside this `index.html`; replace `YOUR_STORE_HANDLE`.
 
 The site browses catalog and collections with numbered pagination, links to product details, selects a variant, adds it to the session cart and opens Tiendu's overlays. Prices remain cents until display. It uses full page navigation, so page views stay automatic.
 
@@ -175,4 +175,4 @@ This small router treats any non-root path's final segment as a product handle, 
 
 For production, serve the files over HTTPS with the same product-path fallback and the additional resource routes your store needs, add the site origin to the store's allowed origins and turn developer mode off. Decide page titles, SEO rendering and accessibility for the finished site. For an SPA, disable automatic page views on first initialization and track them on route changes.
 
-The SDK manages sessions and checks helper mutation errors. For direct `mutate`, always select `session { token }` and `userErrors { code field message }`; handle both even when the response is HTTP 200. Test only with `.test` emails and clean up created orders. See [Storefront API](https://docs.tiendu.uy/headless/calling-the-api) and [SDK](sdk.md).
+The SDK manages sessions and checks helper mutation errors. For direct `mutate`, always select `session { token }` and `userErrors { code field message }`; handle both even when the response is HTTP 200. Test only with `.test` emails and clean up created orders. See [Storefront API](https://docs.tiendu.uy/headless/calling-the-api) and [SDK](https://docs.tiendu.uy/themes/sdk).
