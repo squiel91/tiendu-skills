@@ -61,6 +61,7 @@ The JSON is an example of a response.
   },
   "isListed": false,
   "isEnabled": true,
+  "metadata": null,
   "templateSuffix": null,
   "createdAt": "2026-09-20T12:00:00.000Z",
   "updatedAt": "2026-09-20T12:05:00.000Z"
@@ -80,3 +81,7 @@ The JSON is an example of a response.
 | 422 | Invalid page fields. |
 
 See [Errors](../errors.md) for response examples and stable problem types.
+
+## Custom metadata
+
+A supplied `metadata` value replaces the entire stored JSON; omit it to preserve existing values or send `null` to clear it. See [Resource metadata](../../resource-metadata.md) for supported values, schema-driven editing and storefront visibility.

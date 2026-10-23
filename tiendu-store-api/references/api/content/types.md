@@ -12,6 +12,7 @@ description: Fields of Page, BlogPost, the content blocks, Menu and MenuItem.
 | `handle` | `String!` | Readable identifier, such as `"politicas-de-envio"` |
 | `url` | `String` | The page's path in the store's theme, or `null` when the theme has no route for pages. Headless sites build links from `handle` |
 | `title` | `String` | The title, or `null` |
+| `metadata` | `JSON` | Custom JSON as stored, or `null`; picker references are not resolved. Public whenever this resource is accessible |
 | `template` | `String` | Theme template suffix, or `null` for the default template |
 | `coverImage` | `Image` | The cover image, or `null` |
 | `content` | [`[ContentBlock!]!`](#contentblock) | The body as blocks |
@@ -26,6 +27,7 @@ description: Fields of Page, BlogPost, the content blocks, Menu and MenuItem.
 | `url` | `String` | The post's path in the store's theme, or `null` |
 | `title` | `String!` | The title |
 | `excerpt` | `String` | A short summary, or `null` |
+| `metadata` | `JSON` | Custom JSON as stored, or `null`; picker references are not resolved. Public whenever this resource is accessible |
 | `template` | `String` | Theme template suffix, or `null` |
 | `coverImage` | `Image` | The cover image, or `null` |
 | `publishedAt` | `String` | When it was last published, as an ISO 8601 date, or `null` |

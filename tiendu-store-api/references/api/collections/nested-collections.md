@@ -12,14 +12,26 @@ A merchant can place a collection inside another one. "Ropa" can contain "Remera
 | [`collections(roots: true)`](queries.md#collections) | Every top-level collection |
 | [`collections(parent:)`](queries.md#collections) | The collections one level down, page by page |
 
-## Products are not inherited
+## Products from subcollections
 
-> [!WARNING]
-> `Collection.products` returns the products assigned to that collection, not those of its subcollections.
+By default, `Collection.products` returns only products assigned directly to the collection. Set `includeDescendants: true` to also include products from its listed public subcollections, at every depth. Hidden or unlisted subcollections and their branches are excluded.
 
-If "Ropa" has 6 products of its own and "Remeras" has 15, the "Ropa" page lists 6 products and its `productCount` is `6`.
+Each product appears once, even when assigned to several collections in the branch. Sorting, availability filtering and pagination apply to the combined results.
 
-To show the products of a whole branch, assign them to the parent collection in the Merchant Center, or query each child's products as well.
+```graphql
+query CollectionBranch($handle: String!, $page: Int = 1) {
+  collection(handle: $handle) {
+    name
+    products(includeDescendants: true, first: 24, page: $page) {
+      nodes { id title url }
+      totalCount
+      pageInfo { currentPage hasNextPage }
+    }
+  }
+}
+```
+
+`productCount` remains the count of products assigned directly to the collection. Use `products(includeDescendants: true) { totalCount }` for the combined count. The virtual `todas` collection already includes every listed product, so the argument does not change its results.
 
 ## Parents
 

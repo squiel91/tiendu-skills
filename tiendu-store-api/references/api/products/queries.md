@@ -1,6 +1,6 @@
 ---
 title: Queries
-description: The product, products and reviews queries, their arguments, examples, and what they return on errors.
+description: The product, products, reviews and image queries, their arguments, examples, and what they return on errors.
 ---
 
 Send every query with `POST` to the store's endpoint. No key is needed.
@@ -251,3 +251,23 @@ Only reviews of listed products are included. See [Reviews](reviews.md).
 | `handles` is an empty list | Empty `nodes` |
 | `page` past the last page | Empty `nodes`, `hasNextPage: false` |
 | `first: 0` | Empty `nodes`, `totalPages: 0`. `totalCount` is still exact |
+
+## image
+
+Loads an image from this store's gallery by ID, including images used in metadata. Returns `null` when the ID is unknown or belongs to another store. Gallery images have no listed/public flags; they do not need to be attached to a listed product.
+
+```graphql
+image(id: ID!): Image
+```
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `id` | `ID!` | The gallery image ID, as a string |
+
+```graphql
+query MetadataImage($id: ID!) {
+  image(id: $id) { url alt aspectRatio blurHash }
+}
+```
+
+Variables: `{ "id": "123" }`. The result is the same public `Image` shape used by `coverImage` and product galleries. Storage-provider details are not exposed.

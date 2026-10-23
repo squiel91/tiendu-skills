@@ -19,6 +19,11 @@ Public store data and header-session shopper state. Queries never create a sessi
 """
 type Query {
   store: Store!
+  """Find a gallery image by ID in this store, or null when missing."""
+  image(
+    """Image ID in this store, serialized as a GraphQL ID string."""
+    id: ID!
+  ): Image
   """
   Find a listed product by handle or ID in this store; handle takes precedence when both are supplied.
   """
@@ -82,11 +87,13 @@ type Query {
     roots: Boolean
   ): CollectionConnection!
   """
-  Find a public page by handle, including an unlisted page with a direct link.
+  Find a public page by handle or ID, including unlisted pages. Handle takes precedence when both are supplied.
   """
   page(
     """Readable resource handle in this store."""
-    handle: String!
+    handle: String
+    """Resource ID in this store, serialized as a GraphQL ID string."""
+    id: ID
   ): Page
   """Listed public pages in this store."""
   pages(
@@ -99,10 +106,14 @@ type Query {
     """
     page: Int = 1
   ): PageConnection!
-  """Find a listed blog post by handle."""
+  """
+  Find a listed blog post by handle or ID; handle takes precedence when both are supplied.
+  """
   blogPost(
     """Readable resource handle in this store."""
-    handle: String!
+    handle: String
+    """Resource ID in this store, serialized as a GraphQL ID string."""
+    id: ID
   ): BlogPost
   """Listed blog posts in publication order."""
   blogPosts(
@@ -309,6 +320,10 @@ type Image {
 A public collection; direct lookups may return unlisted collections, while lists require listed collections. The reserved handle todas represents all listed products with virtual ID 0.
 """
 type Collection {
+  """
+  Merchant-defined custom metadata as stored, or null. Picker references are not resolved. This data is public whenever the resource is publicly accessible.
+  """
+  metadata: JSON
   id: ID!
   """Readable resource identifier used in URL patterns and direct lookups."""
   handle: String!
@@ -334,9 +349,13 @@ type Collection {
     first: Int = 50
   ): [Collection!]!
   """
-  Listed products directly assigned to this collection, without child-collection products. The virtual todas collection includes the entire listed catalog.
+  Listed products assigned to this collection, optionally including its descendants. The virtual todas collection includes the entire listed catalog.
   """
   products(
+    """
+    Include products from listed public subcollections at every depth, without duplicates. Defaults to direct assignments only.
+    """
+    includeDescendants: Boolean = false
     """
     Records per page or list, clamped to 0–100. A connection with zero records per page has zero total pages.
     """

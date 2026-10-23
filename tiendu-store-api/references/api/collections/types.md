@@ -10,6 +10,7 @@ description: Fields of Collection, CollectionConnection, PageInfo, SortOption, P
 | `id` | `ID!` | Collection ID. `"0"` for `todas` |
 | `handle` | `String!` | Readable identifier, such as `"remeras"`. Unique in the store |
 | `name` | `String!` | Display name |
+| `metadata` | `JSON` | Custom JSON as stored, or `null`; picker references are not resolved. Public whenever this resource is accessible |
 | `description` | `String` | Plain text written by the merchant, or `null` |
 | `url` | `String` | The collection's path in the store's theme, such as `/categorias/remeras`, or `null` when the theme has no route for collections. A headless site has its own routes: build links from `handle` |
 | `template` | `String` | Theme template suffix, or `null` for the default template |
@@ -32,6 +33,7 @@ description: Fields of Collection, CollectionConnection, PageInfo, SortOption, P
 | `page` | `Int` | `1` | Page number |
 | `sortBy` | [`ProductSort`](#productsort) | `defaultSortBy` | Product order. See [Sorting products](sorting-and-pagination.md#sorting-products) |
 | `available` | `Boolean` | — | `true` for products in stock, `false` for sold-out products. Left out, all. See [Filters](sorting-and-pagination.md#filters) |
+| `includeDescendants` | `Boolean` | `false` | Include products from listed public subcollections at every depth, without duplicates. See [Nested collections](nested-collections.md#products-from-subcollections) |
 
 ### `children` arguments
 

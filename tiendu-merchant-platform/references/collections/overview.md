@@ -64,3 +64,7 @@ Changing the handle of a saved collection shows **Crear redirección de ANTERIOR
 ## API reference
 
 [Collections REST API](../api/collections/overview.md).
+
+## Custom metadata
+
+`metadata` stores custom JSON on each record. The Merchant Center shows **Editar metadatos** when a form schema is configured. See [Resource metadata](../resource-metadata.md) for schema setup, save behavior, API writes and storefront reads.

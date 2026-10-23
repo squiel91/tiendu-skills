@@ -21,6 +21,7 @@ With the Store API you can:
 | List products, or fetch several by handle | [`products`](queries.md#products) |
 | Let the shopper choose a variant | [`options` and `variants`](variants-and-options.md) |
 | Show the right price | [Prices](prices.md) |
+| Resolve a metadata image reference | [`image(id:)`](queries.md#image) |
 | Show ratings and reviews | [Reviews](reviews.md) |
 | Suggest other products | [`Product.related`](#related-products) |
 

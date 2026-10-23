@@ -18,6 +18,7 @@ interface Page {
   seo: PageSeo
   isListed: boolean
   isEnabled: boolean
+  metadata: JsonValue
   templateSuffix: string | null
   createdAt: string
   updatedAt: string
@@ -62,6 +63,8 @@ interface PageSeo {
   title: string | null
   description: string | null
 }
+
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 ```
 
 The JSON is an example of a response.
@@ -94,6 +97,7 @@ The JSON is an example of a response.
   },
   "isListed": true,
   "isEnabled": true,
+  "metadata": null,
   "templateSuffix": null,
   "createdAt": "2026-09-20T12:00:00.000Z",
   "updatedAt": "2026-09-20T12:00:00.000Z"
@@ -111,6 +115,7 @@ The JSON is an example of a response.
 | `seo` | Search engine title and description overrides. [`PageSeo`](#seo). | `{ "title": "About Demo Store", "description": "Who we are and how we ship." }` |
 | `isListed` | Whether the page appears in (public) store listings and search. | `true` |
 | `isEnabled` | Whether the storefront URL resolves. | `true` |
+| `metadata` | Custom JSON as stored, or `null`. Picker references are not resolved. | `{ "bannerText": "Summer offers" }` |
 | `templateSuffix` | Alternate [theme template](https://docs.tiendu.uy/themes/liquid#templates-for-a-group-of-records) suffix, or `null` for the default `page` template. `"landing"` renders `templates/page.landing`. | `null` |
 | `createdAt` | Creation time. Read-only. | `"2026-09-20T12:00:00.000Z"` |
 | `updatedAt` | Last update time. Read-only. | `"2026-09-20T12:00:00.000Z"` |
@@ -244,3 +249,7 @@ interface PageSeo {
 | --- | --- | --- |
 | `title` | Search engine title override. When `null`, themes should fall back to the page title. | `"About Demo Store"` |
 | `description` | Search engine description override. When `null`, themes should fall back to the store description. | `"Who we are and how we ship."` |
+
+## Custom metadata
+
+See [Resource metadata](../../resource-metadata.md) for supported values, schema-driven editing and storefront visibility.

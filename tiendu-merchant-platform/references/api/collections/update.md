@@ -37,9 +37,12 @@ interface UpdateCollection {
   defaultSortBy?: CollectionSort
   coverImageId?: number | null
   seo?: CollectionSeo
+  metadata?: JsonValue
   templateSuffix?: string | null
   createRedirectFromPreviousHandle?: boolean
 }
+
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 ```
 
 The body must contain at least one field. `parentId` cannot point to the collection itself or one of its descendants.
@@ -61,3 +64,7 @@ HTTP 200 returns the updated [collection object](object.md).
 | 422 | Invalid collection fields or an empty patch body. |
 
 See [Errors](../errors.md) for response examples and stable problem types.
+
+## Custom metadata
+
+A supplied `metadata` value replaces the entire stored JSON; omit it to preserve existing values or send `null` to clear it. See [Resource metadata](../../resource-metadata.md) for supported values, schema-driven editing and storefront visibility.

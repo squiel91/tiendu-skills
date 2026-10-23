@@ -19,6 +19,7 @@ interface Collection {
   seo: CollectionSeo
   isListed: boolean
   isEnabled: boolean
+  metadata: JsonValue
   templateSuffix: string | null
   createdAt: string
   updatedAt: string
@@ -34,6 +35,8 @@ interface CollectionSeo {
   title: string | null
   description: string | null
 }
+
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 ```
 
 The JSON is an example of a response.
@@ -59,6 +62,7 @@ The JSON is an example of a response.
   },
   "isListed": true,
   "isEnabled": true,
+  "metadata": null,
   "templateSuffix": null,
   "createdAt": "2026-09-20T12:00:00.000Z",
   "updatedAt": "2026-09-20T12:00:00.000Z"
@@ -79,6 +83,7 @@ The JSON is an example of a response.
 | `seo` | Search engine title and description overrides. | `{ "title": "Summer offers", "description": "Seasonal products and promotions." }` |
 | `isListed` | Whether the collection appears in public listings and search. | `true` |
 | `isEnabled` | Whether the storefront collection URL resolves. | `true` |
+| `metadata` | Custom JSON as stored, or `null`. Picker references are not resolved. | `{ "bannerText": "Summer offers" }` |
 | `templateSuffix` | Alternate theme template suffix, or `null`. | `null` |
 | `createdAt` | Creation time. Read-only. | `"2026-09-20T12:00:00.000Z"` |
 | `updatedAt` | Last update time. Read-only. | `"2026-09-20T12:00:00.000Z"` |
@@ -106,3 +111,7 @@ interface CollectionImage {
   alt: string
 }
 ```
+
+## Custom metadata
+
+See [Resource metadata](../../resource-metadata.md) for supported values, schema-driven editing and storefront visibility.

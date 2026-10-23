@@ -61,6 +61,7 @@ The JSON is an example of a response.
       },
       "isListed": true,
       "isEnabled": true,
+      "metadata": null,
       "templateSuffix": null,
       "createdAt": "2026-09-20T12:00:00.000Z",
       "updatedAt": "2026-09-20T12:00:00.000Z"

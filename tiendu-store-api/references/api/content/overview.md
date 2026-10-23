@@ -25,6 +25,8 @@ With the Store API you can:
 
 The GraphQL definitions for content, as plain text: [schema.graphql.txt](https://docs.tiendu.uy/api-references/store-api/content/schema.graphql.txt). The full schema of the Store API is at `GET https://stores.tiendu.uy/{storeHandle}/api/graphql/schema`, and every field is available through standard introspection.
 
+`page` and `blogPost` accept either `handle` or `id`; `handle` takes precedence when both are supplied. ID lookups follow the same visibility rules as handle lookups.
+
 ## Visibility
 
 | | `page(handle:)`, `blogPost(handle:)` | `pages`, `blogPosts` |
@@ -35,10 +37,10 @@ The GraphQL definitions for content, as plain text: [schema.graphql.txt](https:/
 | Blog post, listed | Returned | Included |
 | Blog post, not listed | `null` | Not included |
 
-An unlisted page works like a hidden link: reachable by its handle, but out of every list. Use it for pages you link to from one place only, such as a landing page.
+An unlisted page works like a hidden link: reachable by its handle or ID, but out of every list. Use it for pages you link to from one place only, such as a landing page.
 
 > [!NOTE]
-> An unknown handle is not an error. The response is HTTP 200 with `null`: render your not-found page from that.
+> An unknown ID or handle is not an error. The response is HTTP 200 with `null`: render your not-found page from that.
 
 ## In this section
 

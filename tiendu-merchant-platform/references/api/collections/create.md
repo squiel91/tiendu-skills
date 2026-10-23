@@ -41,6 +41,7 @@ interface CreateCollection {
   defaultSortBy?: CollectionSort
   coverImageId?: number | null
   seo?: CollectionSeo
+  metadata?: JsonValue
   templateSuffix?: string | null
 }
 
@@ -58,6 +59,8 @@ interface CollectionSeo {
   title: string | null
   description: string | null
 }
+
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 ```
 
 | Field | Description | Constraints | Default | Example |
@@ -71,6 +74,7 @@ interface CollectionSeo {
 | `defaultSortBy` | Default product ordering. | One of the `CollectionSort` values. | `"best-selling"` | `"manual"` |
 | `coverImageId` | Store-owned cover image. | Positive image ID in the same store, or `null`. | `null` | `9` |
 | `seo` | Search engine title and description overrides. | Both fields are strings or `null`. | `{ "title": null, "description": null }` | See JSON above |
+| `metadata` | Custom metadata; replaces the whole value. | Any JSON value, including `null`. | `null` | `{ "label": "Featured" }` |
 | `templateSuffix` | Alternate theme template suffix. | Matches `[a-zA-Z0-9_-]+`, or `null`. | `null` | `"landing"` |
 
 ## Response
@@ -91,3 +95,7 @@ HTTP 201 returns the [collection object](object.md). The `Location` header conta
 | 422 | Invalid collection fields. |
 
 See [Errors](../errors.md) for response examples and stable problem types.
+
+## Custom metadata
+
+`metadata` is optional on create and defaults to `null`. See [Resource metadata](../../resource-metadata.md) for supported values, schema-driven editing and storefront visibility.

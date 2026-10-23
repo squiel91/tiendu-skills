@@ -19,12 +19,15 @@ const { data } = await response.json()
 Returns one public page, including unlisted ones, or `null`.
 
 ```graphql
-page(handle: String!): Page
+page(handle: String, id: ID): Page
 ```
 
 | Argument | Type | Description |
 | --- | --- | --- |
-| `handle` | `String!` | The page's handle, such as `"politicas-de-envio"` |
+| `handle` | `String` | The page's handle. Takes precedence when both arguments are supplied |
+| `id` | `ID` | The page's ID, as a string |
+
+Send either argument. With neither or an unknown ID/handle, the result is `null`.
 
 ```graphql
 query ShippingPolicy {
@@ -87,12 +90,15 @@ query FooterPages {
 Returns one listed blog post, or `null`.
 
 ```graphql
-blogPost(handle: String!): BlogPost
+blogPost(handle: String, id: ID): BlogPost
 ```
 
 | Argument | Type | Description |
 | --- | --- | --- |
-| `handle` | `String!` | The post's handle |
+| `handle` | `String` | The post's handle. Takes precedence when both arguments are supplied |
+| `id` | `ID` | The post's ID, as a string |
+
+Send either argument. With neither or an unknown ID/handle, the result is `null`.
 
 ```graphql
 query Post($handle: String!) {
@@ -173,7 +179,7 @@ The response and how to use the links are on [Menus](menus.md).
 
 | Situation | Result |
 | --- | --- |
-| Unknown handle, a hidden page or an unlisted blog post | `null`, HTTP 200 |
+| Unknown ID/handle, a hidden page or an unlisted blog post | `null`, HTTP 200 |
 | Unknown menu handle | `menu` is `null` |
 | `page` past the last page | Empty `nodes`, `hasNextPage: false` |
 | Malformed GraphQL or invalid variables | HTTP 400 with `errors` |

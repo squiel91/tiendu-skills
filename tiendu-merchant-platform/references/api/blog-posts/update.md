@@ -68,6 +68,7 @@ The JSON is an example of a response.
     "description": "What we shipped this season."
   },
   "isListed": false,
+  "metadata": null,
   "templateSuffix": null,
   "publishedAt": "2026-09-20T12:00:00.000Z",
   "createdAt": "2026-09-20T12:00:00.000Z",
@@ -88,3 +89,7 @@ The JSON is an example of a response.
 | 422 | Invalid blog post fields, or empty body. |
 
 See [Errors](../errors.md) for response examples and stable problem types.
+
+## Custom metadata
+
+A supplied `metadata` value replaces the entire stored JSON; omit it to preserve existing values or send `null` to clear it. See [Resource metadata](../../resource-metadata.md) for supported values, schema-driven editing and storefront visibility.

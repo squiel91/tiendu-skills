@@ -19,6 +19,7 @@ interface BlogPost {
   manager: BlogPostManager
   seo: BlogPostSeo
   isListed: boolean
+  metadata: JsonValue
   templateSuffix: string | null
   publishedAt: string | null
   createdAt: string
@@ -68,6 +69,8 @@ interface BlogPostSeo {
   title: string | null
   description: string | null
 }
+
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 ```
 
 The JSON is an example of a response.
@@ -103,6 +106,7 @@ The JSON is an example of a response.
     "description": "What we shipped this season."
   },
   "isListed": true,
+  "metadata": null,
   "templateSuffix": null,
   "publishedAt": "2026-09-20T12:00:00.000Z",
   "createdAt": "2026-09-20T12:00:00.000Z",
@@ -122,6 +126,7 @@ The JSON is an example of a response.
 | `manager` | Author attribution. Read-only. Creates use the store owner when present, otherwise the lowest `managerId` collaborator. [`BlogPostManager`](#manager). | `{ "name": "Ada Merchant" }` |
 | `seo` | Search engine title and description overrides. [`BlogPostSeo`](#seo). | `{ "title": "Summer launch \| Demo Store", "description": "What we shipped this season." }` |
 | `isListed` | Whether the post appears in public listings and whether the storefront URL resolves. | `true` |
+| `metadata` | Custom JSON as stored, or `null`. Picker references are not resolved. | `{ "bannerText": "Summer offers" }` |
 | `templateSuffix` | Alternate [theme template](https://docs.tiendu.uy/themes/liquid#templates-for-a-group-of-records) suffix, or `null` for the default `article` template. `"landing"` renders `templates/article.landing`. | `null` |
 | `publishedAt` | Publication date: the last time the post went from unlisted to listed, unless set on create or update. `null` for a post never listed. | `"2026-09-20T12:00:00.000Z"` |
 | `createdAt` | Creation time. Read-only. | `"2026-09-20T12:00:00.000Z"` |
@@ -269,3 +274,7 @@ interface BlogPostSeo {
 | --- | --- | --- |
 | `title` | Search engine title override. When `null`, themes should fall back to the blog post title. | `"Summer launch \| Demo Store"` |
 | `description` | Search engine description override. When `null`, themes should fall back to the store description or excerpt. | `"What we shipped this season."` |
+
+## Custom metadata
+
+See [Resource metadata](../../resource-metadata.md) for supported values, schema-driven editing and storefront visibility.

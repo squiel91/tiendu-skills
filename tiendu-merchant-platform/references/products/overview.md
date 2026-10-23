@@ -79,3 +79,7 @@ Changing the attributes or values of a product warns that existing variants may 
 ## API reference
 
 [Products REST API](../api/products/overview.md), [Attributes REST API](../api/attributes/overview.md), and [Images REST API](../api/images/overview.md).
+
+## Custom metadata
+
+`metadata` stores custom JSON on each record. The Merchant Center shows **Editar metadatos** when a form schema is configured. See [Resource metadata](../resource-metadata.md) for schema setup, save behavior, API writes and storefront reads.

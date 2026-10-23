@@ -29,6 +29,8 @@ collection(handle: String, id: ID): Collection
 
 Send one of the two. With neither, the result is `null`. An unlisted collection is returned; a hidden one is not. See [Visibility](overview.md#visibility).
 
+The nested `products` field accepts `includeDescendants: true` to include products from listed public subcollections at every depth, without duplicates. It defaults to `false`. See [Nested collections](nested-collections.md#products-from-subcollections) and the full [products arguments](types.md#products-arguments).
+
 ### Example
 
 A collection page: its name, its parent for a breadcrumb, the sort control, and the first page of products.

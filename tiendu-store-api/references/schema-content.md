@@ -69,6 +69,10 @@ type Review {
 A public content page; direct lookups allow unlisted pages, while page lists require listed pages.
 """
 type Page {
+  """
+  Merchant-defined custom metadata as stored, or null. Picker references are not resolved. This data is public whenever the resource is publicly accessible.
+  """
+  metadata: JSON
   """Readable resource identifier used in URL patterns and direct lookups."""
   handle: String!
   """
@@ -88,6 +92,10 @@ type Page {
 A listed blog post. publishedAt is its last publication time; creation and update times are private.
 """
 type BlogPost {
+  """
+  Merchant-defined custom metadata as stored, or null. Picker references are not resolved. This data is public whenever the resource is publicly accessible.
+  """
+  metadata: JSON
   """Readable resource identifier used in URL patterns and direct lookups."""
   handle: String!
   """

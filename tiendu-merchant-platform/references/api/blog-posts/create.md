@@ -52,6 +52,7 @@ interface CreateBlogPost {
   isListed?: boolean
   publishedAt?: string
   seo?: BlogPostSeo
+  metadata?: JsonValue
   templateSuffix?: string | null
 }
 
@@ -67,6 +68,8 @@ interface ImageBlockWrite {
   size: 'small' | 'medium' | 'large' | 'full'
   align: 'left' | 'center' | 'right'
 }
+
+type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue }
 ```
 
 The JSON is an example of a request.
@@ -105,6 +108,7 @@ The JSON is an example of a request.
 | `isListed` | Whether the post appears in public listings and whether the storefront URL resolves. | Boolean. | `true` | `true` |
 | `publishedAt` | Publication date, to backdate an imported post. | ISO 8601 datetime, or `YYYY-MM-DD` (stored as that date at 12:00 UTC). | When the post is first listed | `"2024-03-15"` |
 | `seo` | Search engine title and description overrides. | Object with `title` and `description`, each a string or `null`. `title` max 255; `description` max 5000. Empty strings become `null`. | `{ "title": null, "description": null }` | `{ "title": "Summer launch \| Demo Store", "description": "What we shipped this season." }` |
+| `metadata` | Custom metadata; replaces the whole value. | Any JSON value, including `null`. | `null` | `{ "label": "Featured" }` |
 | `templateSuffix` | Alternate [theme template](https://docs.tiendu.uy/themes/liquid#templates-for-a-group-of-records). `null` uses `templates/article`. `"landing"` uses `templates/article.landing`. Omit `content` when the template owns the whole article. | Matches `[a-zA-Z0-9_-]+`, or `null`. | `null` | `"landing"` |
 
 See the [blog post object](object.md#content-blocks) for content block fields.
@@ -169,3 +173,7 @@ The JSON is an example of a response.
 | 422 | Invalid blog post fields. |
 
 See [Errors](../errors.md) for response examples and stable problem types.
+
+## Custom metadata
+
+`metadata` is optional on create and defaults to `null`. See [Resource metadata](../../resource-metadata.md) for supported values, schema-driven editing and storefront visibility.

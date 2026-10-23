@@ -17,6 +17,7 @@ Each topic's overview explains the concept, rules, interfaces and where to work 
 | Concept | Folder |
 |---|---|
 | Products, attributes, variants, stock, images | [products](references/products/overview.md) |
+| Custom resource metadata | [resource metadata](references/resource-metadata.md) |
 | Collections | [collections](references/collections/overview.md) |
 | Pages, blog posts and navigation menus | [content](references/content/overview.md) |
 | Orders, payments, shipping | [orders-and-shipping](references/orders-and-shipping/overview.md) |

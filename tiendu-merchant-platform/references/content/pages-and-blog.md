@@ -75,3 +75,7 @@ A page or post does not appear in the site navigation until a menu item points t
 ## API reference
 
 [Pages REST API](../api/pages/overview.md), [Blog posts REST API](../api/blog-posts/overview.md).
+
+## Custom metadata
+
+`metadata` stores custom JSON on each record. The Merchant Center shows **Editar metadatos** when a form schema is configured. See [Resource metadata](../resource-metadata.md) for schema setup, save behavior, API writes and storefront reads.

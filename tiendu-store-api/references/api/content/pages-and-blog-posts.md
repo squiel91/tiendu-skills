@@ -3,7 +3,7 @@ title: Pages and blog posts
 description: Render a page or blog post from its content blocks or its HTML, and show its cover, date and SEO.
 ---
 
-Pages and blog posts share most fields. A blog post adds an `excerpt` and a `publishedAt` date.
+Pages and blog posts share most fields. A blog post adds an `excerpt` and a `publishedAt` date. Both can be loaded by handle or ID, for example `page(id: "24") { title url }` and `blogPost(id: "35") { title url }`. A supplied handle takes precedence over the ID.
 
 ```graphql
 query BlogPostPage($handle: String!) {
@@ -138,3 +138,7 @@ query BlogIndex($page: Int = 1) {
   }
 }
 ```
+
+## Custom metadata
+
+Pages and blog posts expose `metadata: JSON` in detail and list queries. Select the field to receive custom values exactly as stored, or `null`. Picker values remain references such as `{ "__type__": "image", "id": 123 }`. Metadata follows the resource's visibility and is fetched only when selected. Configure values and editing forms through [Resource metadata](https://docs.tiendu.uy/guides/resource-metadata).

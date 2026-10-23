@@ -10,6 +10,7 @@ With the Store API you can:
 | To | Use |
 | --- | --- |
 | Render one collection page | [`collection(handle:)`](queries.md#collection) |
+| Include products from all subcollection levels | [`products(includeDescendants: true)`](nested-collections.md#products-from-subcollections) |
 | List collections for a menu or an index page | [`collections`](queries.md#collections) |
 | Show every product in the store | [`collection(handle: "todas")`](#the-todas-collection) |
 
@@ -46,3 +47,7 @@ A merchant can hide a collection entirely, or keep it reachable by URL but out o
 | [Sorting and pagination](sorting-and-pagination.md) | Order products, build a sort control, and page through results |
 | [Queries](queries.md) | See an example of each query, its arguments, and what errors return |
 | [Types](types.md) | Look up every field of `Collection` and the types around it |
+
+## Custom metadata
+
+Select `metadata` on a collection to read custom JSON as stored, or `null`. Values belong to that collection and are not inherited from parents. Picker references are not resolved. The virtual `todas` collection reads its optional stored presentation row's metadata. See [Resource metadata](https://docs.tiendu.uy/guides/resource-metadata) for editing and schema setup.
