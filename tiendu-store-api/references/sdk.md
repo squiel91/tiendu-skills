@@ -67,10 +67,20 @@ const tiendu = Tiendu({
 - `shopper.getStatus()` → `Promise<Object>`: Read the signed-in customer and wishlist status.
 - `cart.add(variant: Object|string|number, quantity?: number, product?: Object)` → `Promise<Object>`: Add a variant and track add_to_cart on success; returns the cart without opening checkout.
 - `wishlist.toggle(productId: number|string)` → `Promise<Object>`: Toggle a saved product, serializing concurrent changes.
+- `checkout.getPurchase(externalReference?: string)` → `Promise<Object|null>`: Read verified checkout payment state; a browser return never implies approval.
+- `checkout.waitForPurchase(externalReference?: string, options?: Object)` → `Promise<Object|null>`: Wait for a verified result; on timeout return the latest pending state.
+- `checkout.getDraft()` → `Promise<Object|null>`: Read the form draft without creating a session.
+- `checkout.saveDraft(input: Object)` → `Promise<Object>`: Replace the complete form draft, saving the returned session before reporting errors.
+- `checkout.preview(input: Object)` → `Promise<Object>`: Price and validate the supplied purchase without saving it.
+- `checkout.getSessionBinding()` → `Promise<string|null>`: Opaque token binding to retain with an uncertain attempt.
+- `checkout.submit(input: Object, submission: Object, options?: Object)` → `Promise<Object>`: Submit the confirmed purchase. Reuse the same input and key after an uncertain outcome.
+- `checkout.getPayment(externalReference?: string)` → `Promise<Object|null>`: Deprecated: use checkout.getPurchase for payment observation.
+- `checkout.waitForPayment(externalReference?: string, options?: Object)` → `Promise<Object|null>`: Deprecated: use checkout.waitForPurchase for payment observation.
+- `checkout.pay(options: Object)` → `Promise<Object>`: Deprecated: use checkout.preview and checkout.submit for new integrations.
 - `search.open(options?: Object)` → `Promise<HTMLIFrameElement>`: Open search.
 - `cart.getQuantity()` → `Promise<Object>`: Read the cart quantity in units.
 - `shopper.open(options?: Object)` → `Promise<HTMLIFrameElement>`: Open the customer account.
 - `checkout.open(options?: Object)` → `Promise<HTMLIFrameElement>`: Open checkout.
-  Options: `couponCode?` string (Prefilled code; the customer confirms it on the coupon step).
+  Options: `startStep?` string (cart, delivery, contact, summary or payment-options; defaults to cart), `lines?` Array<Object> (Buy-now lines with variantId, quantity and note; omit to use the cart), `couponCode?` string (Prefilled code; the customer confirms it on the coupon step).
 - `wishlist.open()` → `Promise<HTMLIFrameElement>`: Open the wishlist, or request sign-in first.
 - `functions.fetch(slug: string, init?: Object)` → `Promise<Response>`: Call a Function with the current session and no cookies.

@@ -51,6 +51,10 @@ assets/                theme.css (:root tokens), JS, tiendu-sdk.js
 | Push errors and warnings and how to fix them | [validation](references/validation.md) |
 | Branch, preview, publish, undo | [git-workflow](references/git-workflow.md) |
 
+## Custom cart and checkout
+
+For a custom cart and checkout inside a Liquid theme, use the [Checkout and cart via Store API reference](https://github.com/squiel91/checkout-and-cart-via-store-api-reference), based on Minimal. Its README and AGENTS.md map the implementation; use `tiendu-store-api` for the contract, sessions and retry rules. The default Minimal theme continues to use Tiendu's overlays.
+
 ## Advanced: use Tiendu headlessly
 
 Tiendu can also run as a commerce service behind a storefront built with the technology you choose and hosted by you. Use the Store API and browser SDK for shopping data, sessions and Tiendu's checkout/account overlays. This is substantially more advanced than a Tiendu-hosted theme: you own the application, routing, hosting, SEO and deployment. See [Headless](https://docs.tiendu.uy/headless/overview); external coding agents can use `tiendu-headless` alongside `tiendu-store-api`.

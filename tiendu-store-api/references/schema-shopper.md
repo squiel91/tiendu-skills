@@ -95,10 +95,14 @@ type Mutation {
   Create a normalized newsletter subscription and enqueue subscriber.created for its verification email. Creates a session if needed without rotating it; duplicates return EXISTING_SUBSCRIBER.
   """
   subscriberCreate(email: String!): SubscriberPayload!
+  """Replace the saved draft. Creates a session if needed."""
+  checkoutDraftSave(input: CheckoutDraftInput!): CheckoutDraftPayload!
+  """Freeze and submit a purchase. Requires an existing session."""
+  checkoutSubmit(input: CheckoutInput!, submission: CheckoutSubmissionInput!): CheckoutSubmitPayload!
   """
   Save partial contact, delivery, address and note changes. Creates a session if needed without rotating it.
   """
-  checkoutUpdate(input: CheckoutUpdateInput!): CheckoutPayload!
+  checkoutUpdate(input: CheckoutUpdateInput!): CheckoutPayload! @deprecated(reason: "Use the explicit checkoutOptions/checkoutPreview/checkoutSubmit/checkoutPurchase contract.")
   """
   Calculate shipping for the supplied method, location and option. Creates a session if needed without rotating it.
   """
@@ -109,7 +113,7 @@ type Mutation {
     shippingLocationId: ID
     """Pickup-point option key from the selected location, when required."""
     optionKey: String
-  ): CheckoutShippingQuotePayload!
+  ): CheckoutShippingQuotePayload! @deprecated(reason: "Use the explicit checkoutOptions/checkoutPreview/checkoutSubmit/checkoutPurchase contract.")
   """
   Evaluate and save a coupon for this checkout. Creates a session if needed without rotating it.
   """
@@ -120,15 +124,15 @@ type Mutation {
     Optional order total in integer UYU cents for coupon evaluation; otherwise calculated from checkout.
     """
     orderTotalPriceInCents: Int
-  ): CheckoutCouponPayload!
+  ): CheckoutCouponPayload! @deprecated(reason: "Use the explicit checkoutOptions/checkoutPreview/checkoutSubmit/checkoutPurchase contract.")
   """
   Remove the saved coupon. Creates a session if needed without rotating it.
   """
-  checkoutCouponRemove: CheckoutPayload!
+  checkoutCouponRemove: CheckoutPayload! @deprecated(reason: "Use the explicit checkoutOptions/checkoutPreview/checkoutSubmit/checkoutPurchase contract.")
   """
-  Create an order for an external method, updating stock, coupon use and order events, or create a Mercado Pago preference for later payment. Requires a nonempty cart, a saved email (external methods) and a complete delivery choice, returning EMPTY_CART, CONTACT_REQUIRED or DELIVERY_REQUIRED otherwise. Creates a session if needed without rotating it; normal order events send emails and seller notifications.
+  Create an order for an external method, updating stock, coupon use and order events, or create a Mercado Pago preference for later payment. Requires a nonempty cart, complete contact (name, surname, valid email and phone) and a complete delivery choice for physical items, returning EMPTY_CART, CONTACT_REQUIRED or DELIVERY_REQUIRED otherwise. Creates a session if needed without rotating it; normal order events send emails and seller notifications.
   """
-  checkoutComplete(input: CheckoutCompleteInput!): CheckoutCompletePayload!
+  checkoutComplete(input: CheckoutCompleteInput!): CheckoutCompletePayload! @deprecated(reason: "Use the explicit checkoutOptions/checkoutPreview/checkoutSubmit/checkoutPurchase contract.")
 }
 
 """

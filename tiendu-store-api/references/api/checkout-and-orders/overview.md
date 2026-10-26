@@ -1,48 +1,31 @@
 ---
-title: Overview
-description: How checkout turns the cart into an order, step by step, and how the total is built.
+title: Checkout and orders
+description: Preview an explicit purchase, choose delivery and payment, submit once and observe its verified outcome.
 ---
 
-Checkout turns the session's [cart](../cart-and-sessions/overview.md) into an order. It saves the shopper's contact details, a delivery method, an optional coupon and a payment method, all on the current session, then places the order.
+Checkout prices an explicit purchase independently of the shopper's cart. Send the same `CheckoutInput` to preview and submit: lines, contact, delivery, payment method, coupon code and order note. The server calculates every amount. A saved draft is optional prefill and never supplies missing purchase data.
 
-> [!NOTE]
-> The checkout overlay of the [Store SDK](../../sdk.md) runs every step on this page, including Mercado Pago: `tiendu.checkout.open()`. Use the API directly when you build your own checkout. See [Embedded overlays](https://docs.tiendu.uy/headless/checkout-account-and-search).
-
-## The steps
-
-| Step | Use | Read more |
+| Task | Operation | Guide |
 | --- | --- | --- |
-| 1. Save contact details | `checkoutUpdate` | [Contact and delivery](contact-and-delivery.md#contact) |
-| 2. Show the delivery methods | `checkoutDeliveryMethods` | [Contact and delivery](contact-and-delivery.md#delivery-methods) |
-| 3. Quote and save a delivery method | `checkoutShippingQuote`, `checkoutUpdate` | [Contact and delivery](contact-and-delivery.md#shipping-quotes) |
-| 4. Apply a coupon (optional) | `checkoutCouponApply` | [Coupons](coupons.md) |
-| 5. Show the payment options and the total | `checkoutPaymentOptions`, `checkoutPriceSummary` | [Payment and orders](payment-and-orders.md) |
-| 6. Place the order | `checkoutComplete` | [Payment and orders](payment-and-orders.md#placing-the-order) |
+| Discover enabled methods | `checkoutOptions` | [Contact and delivery](contact-and-delivery.md) |
+| Price and validate without saving | `checkoutPreview(input)` | [Queries and mutations](queries.md) |
+| Prefill or save a complete form draft | `checkoutDraft`, `checkoutDraftSave` | [Contact and delivery](contact-and-delivery.md#drafts) |
+| Evaluate a discount code | `checkoutPreview.coupon` | [Coupons](coupons.md) |
+| Submit the reviewed purchase | `checkoutSubmit(input, submission)` | [Payment and orders](payment-and-orders.md) |
+| Observe an accepted purchase | `checkoutPurchase(reference)` | [Payment and orders](payment-and-orders.md#purchase-status) |
 
-`checkout` returns everything saved so far, so a shopper who leaves and comes back finds their details filled in. Like the cart, it belongs to the session: queries never create one, and without a token `checkout` is empty.
+The plain GraphQL definitions: [schema.graphql.txt](https://docs.tiendu.uy/api-references/store-api/checkout-and-orders/schema.graphql.txt). See [Types](types.md) for field details and [Store API conventions](../overview.md) for the endpoint and errors.
 
-The GraphQL definitions for checkout, as plain text: [schema.graphql.txt](https://docs.tiendu.uy/api-references/store-api/checkout-and-orders/schema.graphql.txt). The full schema of the Store API is at `GET https://stores.tiendu.uy/{storeHandle}/api/graphql/schema`, and every field is available through standard introspection.
+Preview works without a session and never creates one. Submit requires an existing `X-Shopper-Session`: cart writes already return it; buy-now callers can use `sessionCreate`. Retain the token before submitting. Former checkout operations remain available but deprecated for released SDK 2.3.0 and existing clients. New integrations use the operations above and SDK 2.4.0. Every submit returns `userErrors`, and its session is null only for `SESSION_REQUIRED`.
 
-## How the total is built
+All checkout amounts are integer UYU cents. Pricing returns items subtotal, coupon discount, shipping included in the payment, signed payment adjustment and the total. Shipping paid to the courier is quoted separately and excluded from the total. Incomplete shipping can be zero while `canSubmit` is false; do not label it free. Digital-only purchases do not require delivery.
 
-Every amount in checkout is in UYU cents. Products priced in USD are converted with the latest exchange rate.
+## Implementation reference
 
-| Order | Amount | Field in `checkoutPriceSummary` |
-| --- | --- | --- |
-| 1 | The items: each line's price × quantity | `items` |
-| 2 | Minus the coupon discount | `couponDiscountAmountInCents` |
-| 3 | Plus shipping, unless it is paid on delivery | `shippingPriceInCents`, `isShippingPaidOnDelivery` |
-| 4 | Plus or minus the payment-method adjustment, a percentage of steps 1–3 | `paymentMethodAdjustmentAmountInCents` |
-| = | The total the shopper pays now | `totalPriceInCents` |
+The [Checkout and cart via Store API reference](https://github.com/squiel91/checkout-and-cart-via-store-api-reference) implements the cart and checkout in a Tiendu Liquid theme using the Store API and SDK. It covers drafts, delivery and arrival quotes, coupons, payment methods, confirmation, idempotent retries and verified purchase observation. It is based on [Minimal](https://github.com/squiel91/minimal-theme); the companion [Headless Minimal](https://github.com/squiel91/headless-minimal-theme) is a SvelteKit storefront for your own hosting.
 
-Lines whose variant has no price, or whose product or variant is no longer listed, are left out of checkout. While the delivery choice is incomplete, shipping is left out and `isShippingPending` is `true`. The total is recalculated on every read: query `checkoutPriceSummary` again after any change to the cart, delivery, coupon or payment method.
+## Buy now
 
-## In this section
+Open the hosted purchase-items screen with `tiendu.checkout.open({ lines: [{ variantId: '11', quantity: 1 }] })`. No cart write is made. Quantity can change in the overlay; choose the variant on the product page. Without `lines`, the overlay opens the cart. `couponCode` and validated `startStep` entry remain supported.
 
-| Page | Read it to |
-| --- | --- |
-| [Contact and delivery](contact-and-delivery.md) | Save contact details, list delivery methods, walk the location tree and quote shipping |
-| [Coupons](coupons.md) | Apply and remove a coupon, and read its status |
-| [Payment and orders](payment-and-orders.md) | Show payment options and the total, place the order, and pay with Mercado Pago |
-| [Queries and mutations](queries.md) | See an example of each operation and its arguments |
-| [Types](types.md) | Look up every field of `Checkout`, the delivery types, the price summary and the payloads |
+For a custom checkout, omit `cartLineId` on buy-now input lines. For a purchase from a cart, copy each cart line's `id` into `cartLineId`. Placement subtracts only eligible referenced rows, capped at their current quantity; buy-now does not remove another cart line holding the same variant.

@@ -154,24 +154,38 @@ type Query {
   Whether this store has a customer account for the normalized email; no session is created.
   """
   customerEmailExists(email: String!): Boolean!
+  """Store delivery and payment methods. Independent of any cart."""
+  checkoutOptions: CheckoutOptions!
+  """Price and validate a purchase. Saves nothing; works without a session."""
+  checkoutPreview(input: CheckoutInput!): CheckoutPreview!
+  """
+  Prefill for the checkout form: the saved draft, filled from the signed-in profile. Null without a session.
+  """
+  checkoutDraft: CheckoutDraft
+  """A submitted purchase. Null for an unknown reference."""
+  checkoutPurchase(reference: ID!): CheckoutPurchase
   """Saved checkout state, or empty state without a session."""
-  checkout: Checkout!
-  checkoutDeliveryMethods: CheckoutDeliveryMethods!
+  checkout: Checkout! @deprecated(reason: "Use the explicit checkoutOptions/checkoutPreview/checkoutSubmit/checkoutPurchase contract.")
+  checkoutDeliveryMethods: CheckoutDeliveryMethods! @deprecated(reason: "Use the explicit checkoutOptions/checkoutPreview/checkoutSubmit/checkoutPurchase contract.")
   """
   Recalculate totals, optionally including an external payment method adjustment.
   """
   checkoutPriceSummary(
     """External payment method key used to calculate its price adjustment."""
     paymentMethod: String
-  ): CheckoutPriceSummary!
-  checkoutPaymentOptions: CheckoutPaymentOptions!
+  ): CheckoutPriceSummary! @deprecated(reason: "Use the explicit checkoutOptions/checkoutPreview/checkoutSubmit/checkoutPurchase contract.")
+  checkoutPaymentOptions: CheckoutPaymentOptions! @deprecated(reason: "Use the explicit checkoutOptions/checkoutPreview/checkoutSubmit/checkoutPurchase contract.")
+  """
+  Verified snapshot/payment outcome. IDs, order status and URL are visible only to the owning session.
+  """
+  checkoutPayment(reference: String!): CheckoutPaymentState @deprecated(reason: "Use the explicit checkoutOptions/checkoutPreview/checkoutSubmit/checkoutPurchase contract.")
   """
   Find an order by its store-scoped payment reference. Null until a matching order exists; no session is created.
   """
   payment(
     """External reference returned by Mercado Pago checkout completion."""
     externalReference: String!
-  ): CheckoutPayment
+  ): CheckoutPayment @deprecated(reason: "Use the explicit checkoutOptions/checkoutPreview/checkoutSubmit/checkoutPurchase contract.")
 }
 
 """

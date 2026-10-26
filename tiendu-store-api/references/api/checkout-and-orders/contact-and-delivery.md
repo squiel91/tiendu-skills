@@ -1,244 +1,49 @@
 ---
 title: Contact and delivery
-description: Save the shopper's contact details and address, list the delivery methods, walk the location tree, and quote shipping.
+description: Supply explicit contact and delivery, browse enabled methods and use optional form drafts.
 ---
 
-## Contact
-
-`checkoutUpdate` saves contact details, the address, the delivery choice and an order note on the session. Send only the fields that changed; the others keep their saved values.
-
-```graphql
-mutation SaveContact($input: CheckoutUpdateInput!) {
-  checkoutUpdate(input: $input) {
-    checkout {
-      contact { name surname email phone }
-      customerNote
-    }
-    session { token }
-    userErrors { code field message }
-  }
-}
-```
-
-```json
-{
-  "input": {
-    "name": "Ana",
-    "surname": "Pérez",
-    "email": "ana@example.com",
-    "phone": "099 123 456",
-    "customerNote": "Retiro el sábado"
-  }
-}
-```
-
-> [!WARNING]
-> `checkoutUpdate` saves what you send without checking it. Validate the email and the required fields in your form before placing the order.
-
-The order uses the saved email for its confirmation email, and the order then appears in the [account](../customers-and-wishlist/profile-and-orders.md#orders) of any customer with that email.
+Every submission needs name, surname, valid email and phone in `input.contact`. Preview reports all missing fields. Submission never fills them from a profile or draft. Input limits match existing order storage: 128 characters for name, surname and email, 32 for phone, 512 for address and 16 for postal code. Oversized values are malformed requests. A digital-only purchase ignores delivery; a mixed purchase needs complete delivery.
 
 ## Delivery methods
 
-`checkoutDeliveryMethods` lists how the store delivers. There are three kinds:
+`checkoutOptions.deliveryMethods` returns one list including store pickup. Select the returned opaque `id`; never construct courier keys. Location nodes are flat with `id`, `parentId`, `name` and `pickupPoints`. Build their tree using parent IDs; a leaf has no children.
 
-| Kind | `shippingMethod` key | Listed in | Needs |
-| --- | --- | --- | --- |
-| Store pick-up | `"pick-up"` | `pickup`, when the store offers it | Nothing else |
-| The store's own shipping | `"shipping"` | `methods` | A location and an address |
-| A courier, such as UES or DAC | The courier's key, such as `"ues"` | `methods` | A location, and an address or a pick-up point |
+| Kind | Required input.delivery fields |
+| --- | --- |
+| `STORE_PICKUP` | `methodId` |
+| `HOME_DELIVERY` | `methodId`, leaf `locationId`, `addressLine`; postal code optional |
+| `PICKUP_POINT` | `methodId`, leaf `locationId`, one of its `pickupPointId`s |
 
-Couriers come in two types, given by `type`:
-
-| `type` | Example `typeLabel` | Needs |
-| --- | --- | --- |
-| `door-to-door` | Envío a domicilio | `shippingLocationId` and `addressLine` |
-| `pick-up-point` | Retiro en agencia | `shippingLocationId` and `optionKey`, the agency |
-
-The store's own shipping (`"shipping"`) is always `door-to-door`.
-
-```graphql
-query DeliveryMethods {
-  checkoutDeliveryMethods {
-    pickup { text locationLink }
-    enablePaidOnDelivery
-    methods { key label typeLabel type supportsPaidOnDelivery logo description }
-  }
-}
-```
-
-```json
-{
-  "data": {
-    "checkoutDeliveryMethods": {
-      "pickup": { "text": "Retirá en nuestro local de Av. Brasil 2500, de lunes a viernes de 10 a 18.", "locationLink": "https://maps.app.goo.gl/abc123" },
-      "enablePaidOnDelivery": true,
-      "methods": [
-        {
-          "key": "ues",
-          "label": "Ues",
-          "typeLabel": "Envío a domicilio",
-          "type": "door-to-door",
-          "supportsPaidOnDelivery": false,
-          "logo": "https://assets.tiendu.uy/statics/ues.svg",
-          "description": "Empresa especializada en transporte de paquetes de e-commerce."
-        },
-        {
-          "key": "dac",
-          "label": "DAC",
-          "typeLabel": "Retiro en agencia",
-          "type": "pick-up-point",
-          "supportsPaidOnDelivery": true,
-          "logo": "https://assets.tiendu.uy/statics/dac.svg",
-          "description": "Agencia Central - DAC. Transporte de encomiendas y paquetería a todo el país."
-        }
-      ]
-    }
-  }
-}
-```
-
-`pickup` is `null` when the store does not offer pick-up.
-
-> [!WARNING]
-> Always save a `shippingMethod`. A checkout without one is treated as store pick-up, and fails with `DELIVERY_REQUIRED` when the store does not offer pick-up.
-
-## The location tree
-
-Each method in `methods` has its own `locations` tree: country, department, then city. The shopper picks down the tree, and you send the ID of the last level they chose as `shippingLocationId`.
-
-```graphql
-query Locations {
-  checkoutDeliveryMethods {
-    methods {
-      key
-      locations {
-        children {
-          id name
-          children {
-            id name
-            options { key name address mapUrl }
-            children { id name }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-The top node is a placeholder named `_ROOT`; start from its `children`. Part of the tree for UES and DAC:
-
-```json
-[
-  {
-    "key": "ues",
-    "locations": {
-      "children": [
-        {
-          "id": "1",
-          "name": "Uruguay",
-          "children": [
-            { "id": "22", "name": "Montevideo", "options": [], "children": [{ "id": "23", "name": "Montevideo" }, { "id": "1054", "name": "Otro" }] }
-          ]
-        }
-      ]
-    }
-  },
-  {
-    "key": "dac",
-    "locations": {
-      "children": [
-        {
-          "id": "1",
-          "name": "Uruguay",
-          "children": [
-            {
-              "id": "22",
-              "name": "Montevideo",
-              "children": [],
-              "options": [{ "key": "montevideo-peru/2068", "name": "Cerro", "address": "Peru 2068", "mapUrl": "https://www.google.com/maps/search/?api=1&query=-34.87942995,-56.258557502" }]
-            }
-          ]
-        }
-      ]
-    }
-  }
-]
-```
-
-| Method type | Go down until | Then send |
-| --- | --- | --- |
-| `door-to-door` | A location with no `children` | Its `id` as `shippingLocationId`, plus `addressLine` |
-| `pick-up-point` | A location with `options` | Its `id` as `shippingLocationId`, and the chosen option's `key` as `optionKey` |
-
-Each method has its own tree: IDs and agencies differ between couriers.
+Switching methods requires sending the new complete selection. A location or point from another method reports `DELIVERY_METHOD_UNAVAILABLE`. Each method exposes `isShippingPaidOnDelivery`: when true, its quoted charge is paid to the courier and excluded from `pricing.totalInCents`.
 
 ## Shipping quotes
 
-`checkoutShippingQuote` prices a method for a location before the shopper commits to it. It does not save anything.
+Preview returns `shippingQuote` for the selected delivery. It is null while delivery is incomplete or invalid. For comparing methods, select `checkoutPreview.quote(methodId:, locationId:)` with the same purchase lines. A broader location may produce a minimum price (`isMinimum`); store pickup returns zero without a location. Quotes save nothing and must be refreshed after the input changes.
 
-```graphql
-mutation Quote($method: String!, $locationId: ID, $optionKey: String) {
-  checkoutShippingQuote(shippingMethod: $method, shippingLocationId: $locationId, optionKey: $optionKey) {
-    quote { priceInCents estimatedDeliveryAt isMinimum isDeliveryDateFixed }
-    session { token }
-    userErrors { code field message }
-  }
-}
+`estimatedDeliveryAt` includes a timezone offset and is null for store pickup. `isDeliveryDateFixed` distinguishes a delivery day from a deadline. Submission revalidates the delivery and prices it again.
+
+## Drafts
+
+`checkoutDraft` returns nullable form prefill for the session. Missing saved contact values fall back to the signed-in store customer; addresses come only from the saved draft. Treat returned method IDs as unverified until previewed.
+
+`checkoutDraftSave(input)` replaces the whole draft. Send the complete form snapshot: omitted fields are cleared, contact values are trimmed and empty strings become null. Unknown method IDs and coupon codes can be saved because the draft is only prefill. It creates a session if necessary and returns `draft`, `session { token }` and `userErrors`.
+
+Saving a draft does not change preview or submission calculations. Save contact when filled and on form-step changes if you want merchant abandoned-cart campaigns and conversion matching to have that contact. Custom clients that skip draft saving do not provide equivalent marketing coverage. Only explicit purchase input is used when ordering.
+
+SDK 2.4.0 provides `checkout.getDraft()` and `checkout.saveDraft(input)`. The reader returns the prefilled draft or `null` and does not create a session. Saving creates a session if needed and retains its token. It returns `{ draft, session, userErrors }`; inspect business errors explicitly, as with `checkout.submit`. Network and GraphQL errors reject the promise. Send the entire form on every save; omitted fields are cleared. Purchase lines belong only in preview/submit.
+
+```js
+const previousDraft = await tiendu.checkout.getDraft()
+const saved = await tiendu.checkout.saveDraft({
+  contact: {
+    name: 'Ana', surname: 'Pérez',
+    email: 'ana@example.test', phone: '+59899123456'
+  },
+  delivery: null,
+  paymentMethodId: null,
+  couponCode: null,
+  note: null
+})
+if (saved.userErrors.length) throw new Error(saved.userErrors[0].message)
 ```
-
-```json
-{ "method": "ues", "locationId": "23" }
-```
-
-```json
-{
-  "data": {
-    "checkoutShippingQuote": {
-      "quote": { "priceInCents": 26800, "estimatedDeliveryAt": "2026-10-21T23:59:59.999", "isMinimum": false, "isDeliveryDateFixed": true },
-      "session": { "token": "82c3e873-c3e0-40b5-a812-26a3114d6c3f" },
-      "userErrors": []
-    }
-  }
-}
-```
-
-| Field | Meaning |
-| --- | --- |
-| `priceInCents` | The shipping price in UYU cents. `0` for pick-up and when free shipping applies |
-| `estimatedDeliveryAt` | The promised delivery date |
-| `isDeliveryDateFixed` | `true` when `estimatedDeliveryAt` is the delivery day; `false` when it is the latest day |
-| `isMinimum` | `true` when the price is a starting price and the final one can be higher |
-
-The quote uses the cart's weight and subtotal, so quote again when the cart changes.
-
-| Code | Meaning |
-| --- | --- |
-| `INVALID_SHIPPING_METHOD_KEY` | The key is not a delivery method |
-| `SHIPPING_METHOD_DISABLED` | The store does not offer that method |
-| `MISSING_LOCATION_SELECTION` | The method needs a `shippingLocationId`, or it does not deliver to that location |
-| `MISSING_PICKUP_POINT_SELECTION` | A `pick-up-point` method needs an `optionKey` |
-
-These come in `userErrors` with a Spanish `message` ready to show, such as "Elegí la agencia donde retirar el pedido.". Store pick-up returns `SHIPPING_METHOD_DISABLED` when the store does not offer it.
-
-## Saving the delivery choice
-
-When the shopper confirms, save the method with `checkoutUpdate`:
-
-```json
-{ "input": { "shippingMethod": "ues", "shippingLocationId": "23", "addressLine": "Av. Brasil 2500 apto 3", "postalCode": "11300" } }
-```
-
-```json
-{ "input": { "shippingMethod": "dac", "shippingLocationId": "22", "optionKey": "montevideo-peru/2068" } }
-```
-
-```json
-{ "input": { "shippingMethod": "pick-up" } }
-```
-
-The saved choice is what `checkoutPriceSummary` and `checkoutComplete` use.
-
-## Paying shipping on delivery
-
-When `enablePaidOnDelivery` is `true` and the chosen method has `supportsPaidOnDelivery: true`, shipping is always paid to the courier on delivery; the shopper does not choose it. The shipping is then left out of the total: `checkoutPriceSummary` returns `isShippingPaidOnDelivery: true`, and `totalPriceInCents` does not include `shippingPriceInCents`.
